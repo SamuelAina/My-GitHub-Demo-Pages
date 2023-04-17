@@ -5,75 +5,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
+        /* Add your previous CSS styles here */
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: #1c1c1c;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 1rem;
-        }
-
-        /* Links styles */
-        .demo-links {
+        /* Navbar styles */
+        .navbar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
+            background-color: #333;
+            padding: 1rem;
         }
 
-        .demo-links a {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #007bff;
+        .logo {
+            height: 2rem;
+            fill: #fff;
+        }
+
+        .hamburger-menu {
+            display: none;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links a {
             color: #fff;
             text-decoration: none;
-            border-radius: 3px;
-            margin: 0.5rem 0;
-            transition: background-color 0.3s;
+            padding: 0 1rem;
         }
 
-        .demo-links a:hover {
-            background-color: #0056b3;
+        .nav-links a:hover {
+            color: #007bff;
         }
 
         /* Media queries for responsiveness */
-        @media screen and (max-width: 600px) {
-            h1 {
-                font-size: 1.5rem;
+        @media screen and (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
             }
 
-            .container {
-                padding: 1rem;
+            .nav-links {
+                display: none;
+            }
+
+            .nav-links.responsive {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #333;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to AI-Natural Demo Pages!</h1>
-        <div class="demo-links">
+    <!-- Add the navbar -->
+    <nav class="navbar">
+        <a href="#">
+            <!-- Add sample SVG image as logo -->
+            <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+            </svg>
+        </a>
+        <div class="nav-links">
             <a href="Demo1.html">Demo 1</a>
             <a href="Demo2.html">Demo 2</a>
             <a href="Demo3.html">Demo 3</a>
         </div>
+        <span class="hamburger-menu" onclick="toggleMenu()">&#9776;</span>
+    </nav>
+
+    <!-- Your previous container code -->
+    <div class="container">
+        <h1>Welcome to my GitHub Demo Pages!</h1>
     </div>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("responsive");
+        }
+    </script>
 </body>
 </html>
