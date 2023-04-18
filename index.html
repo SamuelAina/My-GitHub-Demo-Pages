@@ -1,96 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>AI-Natural Demos</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        /* Add your previous CSS styles here */
-
-        /* Navbar styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            padding: 1rem;
-        }
-
-        .logo {
-            height: 2rem;
-            fill: #fff;
-        }
-
-        .hamburger-menu {
-            display: none;
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .nav-links {
-            display: flex;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            padding: 0 1rem;
-        }
-
-        .nav-links a:hover {
-            color: #007bff;
-        }
-
-        /* Media queries for responsiveness */
-        @media screen and (max-width: 768px) {
-            .hamburger-menu {
-                display: block;
+    <head>
+        <title>AI-Natural Demos</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="index.css">
+		<link rel="stylesheet" href="https://use.typekit.net/bvl0nbs.css">
+        <script>
+		    window.onload = function(){
+				closeMenu();
+			}
+						
+            function openMenu() {
+                document.getElementById("menu").style.left = "0";
+				document.getElementById("menu").style.width ="200px";
+				document.getElementById("menu").style.display="block";
             }
 
-            .nav-links {
-                display: none;
+            function closeMenu() {
+			    document.getElementById("menu").style.width = "200px";
+                document.getElementById("menu").style.left = "200px";
+				document.getElementById("menu").style.display="none"
             }
+        </script>
+    </head>
+    <body>
+        <div class="navbar">
+            <i onclick="openMenu()">&#9776;</i>
+            <h2>AI-Natural App Demos</h2>
+        </div>
 
-            .nav-links.responsive {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                background-color: #333;
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Add the navbar -->
-    <nav class="navbar">
-        <a href="#">
-            <!-- Add sample SVG image as logo -->
-            <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-        </a>
-        <div class="nav-links">
+        <div id="menu" class="menu">
+            <i onclick="closeMenu()" style="float: right;">&times;</i>
             <a href="Demo1.html">Demo 1</a>
             <a href="Demo2.html">Demo 2</a>
             <a href="Demo3.html">Demo 3</a>
         </div>
-        <span class="hamburger-menu" onclick="toggleMenu()">&#9776;</span>
-    </nav>
-
-    <!-- Your previous container code -->
-    <div class="container">
-        <h1>Welcome to my GitHub Demo Pages!</h1>
-    </div>
-
-    <script>
-        function toggleMenu() {
-            const navLinks = document.querySelector(".nav-links");
-            navLinks.classList.toggle("responsive");
-        }
-    </script>
-</body>
+		<div  onclick="closeMenu()" style="margin: 10px 10px 10px;">
+<h2>Welcome to AI-Natural Ltd Showcase!</h2>
+<p>
+Discover the power of cutting-edge web applications crafted by our talented team of programmers at AI-Natural Ltd. This website is a living portfolio, dedicated to showcasing innovative and versatile sample web applications that are constantly evolving and growing. 
+</p>
+<p>
+As we continue to push the boundaries of technology, our team adds new applications, ensuring you always have access to the latest and most inspiring work we have to offer.
+</p>
+<p>
+Our applications are built using a diverse set of technologies, including APIs, JavaScript, Python, SQL, and many more. Our goal is to deliver robust, practical, and user-friendly solutions that demonstrate the potential of these technologies and inspire creativity.		
+</p>
+		</div>
+    </body>
 </html>
