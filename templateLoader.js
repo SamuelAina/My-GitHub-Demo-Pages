@@ -9,9 +9,9 @@ function loadTemplate(templateName, targetElementId) {
         });
 }
 
-    //window.onload = function(){
+    window.onload = function(){
         closeMenu();
-    //}
+    }
 
     function openMenu() {
         document.getElementById("menu").style.left = "0";
@@ -27,6 +27,5 @@ function loadTemplate(templateName, targetElementId) {
 
 window.addEventListener('DOMContentLoaded', () => {
     loadTemplate('header.html', 'header');
-    loadTemplate('footer.html', 'footer');
-    closeMenu();
+    //loadTemplate('footer.html', 'footer');
 });
