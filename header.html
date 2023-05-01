@@ -1,6 +1,23 @@
-    <head>        
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="index.css">
+<head>        
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="index.css">
 	<link rel="stylesheet" href="https://use.typekit.net/bvl0nbs.css">
-    </head>
+</head>
+<script>
+    window.onload = function(){
+        closeMenu();
+    }
+
+    function openMenu() {
+        document.getElementById("menu").style.left = "0";
+        document.getElementById("menu").style.width ="200px";
+        document.getElementById("menu").style.display="block";
+    }
+
+    function closeMenu() {
+        document.getElementById("menu").style.width = "200px";
+        document.getElementById("menu").style.left = "200px";
+        document.getElementById("menu").style.display="none"
+    }
+</script>
