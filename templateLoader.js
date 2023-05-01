@@ -15,3 +15,21 @@ window.addEventListener('DOMContentLoaded', () => {
     loadTemplate('header.html', 'header');
     //loadTemplate('footer.html', 'footer');
 });
+
+
+
+window.onload = function(){
+    closeMenu();
+}
+
+function openMenu() {
+    document.getElementById("menu").style.left = "0";
+    document.getElementById("menu").style.width ="200px";
+    document.getElementById("menu").style.display="block";
+}
+
+function closeMenu() {
+    document.getElementById("menu").style.width = "200px";
+    document.getElementById("menu").style.left = "200px";
+    document.getElementById("menu").style.display="none"
+}
