@@ -22,7 +22,7 @@ window.onload = function(){
 	    function(){
 			closeMenu();
 			document.getElementById("hamburger").addEventListener("click", openMenu);
-	}, 100)
+	}, 300)
     //
 }
 
