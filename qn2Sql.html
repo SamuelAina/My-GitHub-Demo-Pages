@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Queries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+		.q, .s {
+        border: 1px solid #ccc;
+        background-color: #f4f4f4;
+        padding: 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .q {
+        font-weight: bold;
+        color: #444;
+    }
+
+    .s {
+        font-family: "Courier New", monospace;
+        color: #333;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+<div id="result"></div>
+
+
+
+<script> 
+showTable();
+
+function showTable(){
+  document.getElementById("result").innerHTML="";
+  _rd("adwCHTLast10Queries",{});
+}
+
+function _rd(f,d){
+	let data = {
+				token:"EF016773-E1D0-4203-86A0-489689BCA865",
+				func: f,
+				param:d
+			};
+	fetch("https://ainat-385820.ew.r.appspot.com/rcp", {
+	method: "POST",
+	headers: {'Content-Type': 'application/json'}, 
+	body:JSON.stringify(data)
+	}).then(response => {
+		return response.text();
+	   }).then(result =>{
+		   document.getElementById("result").innerHTML=result;
+	   }); 
+ }
+</script>
+</body>
+</html>
