@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        div.container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        textarea#question {
+            width: 100%;
+            min-height: 80px;
+            resize: vertical;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #1e90ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #007acc;
+        }
+
+        div#result {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 2px solid #1e90ff;
+        }
+
+        th {
+            background-color: #1e90ff;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Demo Chatbot for Adventureworks Database</h1>
+        <p>This is a Demo Chat bot for interrogating a relational database in plain English. The database is for a fictitious company called Adventureworks and it contains information about its products, employees, customers, and sales. Therefore, the questions should be relevant to these.</p>
+        <textarea id="question" placeholder="Type your question here...">how many employees are there?</textarea>
+        <button onclick="okClicked()">OK</button>
+        <div id="result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>TotalEmployees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>290</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script> 
+
+function okClicked(){
+  document.getElementById("result").innerHTML="";
+  _rd("adwCHT",{question:document.getElementById("question").value});
+}
+
+function _rd(f,d){
+	let data = {
+				token:"EF016773-E1D0-4203-86A0-489689BCA865",
+				func: f,
+				param:d
+			};
+	fetch("https://ainat-385820.ew.r.appspot.com/rcp", {
+	method: "POST",
+	headers: {'Content-Type': 'application/json'}, 
+	body:JSON.stringify(data)
+	}).then(response => {
+		return response.text();
+	   }).then(result =>{
+	       console.log(result);
+		   o=JSON.parse(result);
+		   console.log(o);
+		   h="<table border=2>"
+		   + Object.keys(o[0]).map(function(i){return "<th>"+i+"</th>"}).join("")
+		   + o.map(function(r){return "<tr>"+Object.values(r).map(function(i){return "<td>"+i+"</td>"}).join("")+"</tr>"}).join("")
+		   + "</table>"
+		   
+		   document.getElementById("result").innerHTML=h;
+	   }); 
+ }
+</script	
+</body>
+</html>
