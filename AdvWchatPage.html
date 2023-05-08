@@ -63,9 +63,7 @@
 
         div#result {
             margin-top: 20px;
-            overflow-y: auto;
-            max-height: 400px;
-        }	
+        }
 
         table {
             width: 100%;
@@ -86,13 +84,18 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        div#result {
+            margin-top: 20px;
+            overflow-y: auto;
+            max-height: 400px;
+        }		
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Demo Chatbot for Adventureworks Database</h1>
-        <p>This is a Demo Chat bot for interrogating a relational database in plain English. The database is for a fictitious company called Adventureworks and it contains information about its products, employees, customers, and sales. Therefore, the questions should be relevant to these.</p>
-        <textarea id="question" placeholder="Type your question here...">how many employees are there?</textarea>
+        <p>This is a Demo Chat bot for interrogating a relational database in plain English. The database is for a fictitious company called Adventureworks and it contains information about products, employees, customers, and sales. Therefore, the questions should be relevant to these.</p>
+        <textarea id="question" placeholder="Type your question here..."></textarea>
         <button onclick="okClicked()">OK</button>
         <div id="result">
             <table>
@@ -130,6 +133,7 @@ function _rd(f,d){
 		return response.text();
 	   }).then(result =>{
 	       console.log(result);
+		   try{
 		   o=JSON.parse(result);
 		   console.log(o);
 		   h="<table border=2>"
@@ -138,6 +142,9 @@ function _rd(f,d){
 		   + "</table>"
 		   
 		   document.getElementById("result").innerHTML=h;
+		   }catch(err) {
+			  document.getElementById("result").innerHTML = err.message;
+			}
 	   }); 
  }
 </script	
