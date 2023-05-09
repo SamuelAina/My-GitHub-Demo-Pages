@@ -88,7 +88,22 @@
             margin-top: 20px;
             overflow-y: auto;
             max-height: 400px;
-        }		
+        }	
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+		
     </style>
 </head>
 <body>
@@ -98,12 +113,12 @@
         <textarea id="question" placeholder="Type your question here..."></textarea>
         <button onclick="okClicked()">OK</button>
         <div id="result">
-        </div>
+        </div>		
     </div>
 <script> 
 
 function okClicked(){
-  document.getElementById("result").innerHTML="";
+  document.getElementById("result").innerHTML="<div class='loader'></div>";
   _rd("adwCHT",{question:document.getElementById("question").value});
 }
 
@@ -135,6 +150,6 @@ function _rd(f,d){
 			}
 	   }); 
  }
-</script	
+</script>	
 </body>
 </html>
