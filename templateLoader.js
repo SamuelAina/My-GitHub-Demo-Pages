@@ -18,11 +18,11 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.onload = function(){
-	setTimeout(
-	    function(){
+	//setTimeout(
+	//    function(){
 			closeMenu();
 			document.getElementById("hamburger").addEventListener("click", openMenu);
-	}, 300)
+	//}, 300)
     //
 }
 
