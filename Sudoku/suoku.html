@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Puzzle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  
+    <style>
+        table {
+            margin: 0 auto;
+            width: 450px;
+            height: 450px;
+			border: 5px solid #000;
+        }
+		
+		table tr:nth-child(3) td {
+			border-bottom: 3px solid #000; 
+		}
+		table tr:nth-child(6) td {
+			border-bottom: 3px solid #000; 
+		}
+		
+		table tr td:nth-child(3) {
+			border-right: 3px solid #000; 
+		}
+		
+		table tr td:nth-child(6) {
+			border-right: 3px solid #000; 
+		}
+		
+        td {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+      
+        input {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            border: none;
+        }
+        input:focus {
+            outline: none;
+        }
+  
+  
+        .btn {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            font-size: 24px;
+        }
+        .direction-keys {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+		
+        .selected {
+            background-color: #ddd;
+        }		
+    </style>
+
+</head>
+<body>
+    <div id="sudokugrid"></div>
+  
+  
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-4">
+                <div class="text-center">
+                    <div class="btn-group-horizontal">
+                        <button onclick="bc()" type="button" class="btn btn-secondary">1</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">2</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">3</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">4</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">5</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">6</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">7</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">8</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">9</button>
+                        <button onclick="bc()" type="button" class="btn btn-secondary">C</button>
+                    </div>
+                    <div class="direction-keys mt-4">
+                        <button onclick="mvl()" type="button" class="btn btn-primary">&#8592;</button><!--Left -->
+                        <button onclick="mvu()" type="button" class="btn btn-primary">&#8593;</button> <!--Up -->
+                        <button onclick="mvd()" type="button" class="btn btn-primary">&#8595;</button><!--Down -->
+                        <button onclick="mvr()" type="button" class="btn btn-primary">&#8594;</button><!--Right -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script defer>
+sdata = [
+  ['5', '3', '0', '0', '7', '0', '0', '0', '0'],
+  ['6', '0', '0', '1', '9', '5', '0', '0', '0'],
+  ['0', '9', '8', '0', '0', '0', '0', '6', '0'],
+  ['8', '0', '0', '0', '6', '0', '0', '0', '3'],
+  ['4', '0', '0', '8', '0', '3', '0', '0', '1'],
+  ['7', '0', '0', '0', '2', '0', '0', '0', '6'],
+  ['0', '6', '0', '0', '0', '0', '2', '8', '0'],
+  ['0', '0', '0', '4', '1', '9', '0', '0', '5'],
+  ['0', '0', '0', '0', '8', '0', '0', '7', '9']
+];
+
+var currentR, currentC,currentID;
+
+var grdhtml='<table><tbody>'+[0,1,2,3,4,5,6,7,8].map(function(r){return  '<tr>'+[0,1,2,3,4,5,6,7,8].map(function(c){
+									  return (sdata[r][c]=="0")?`<td  r=${r} c=${c} style="color:black;"></td>` : `<td r=${r} c=${c} style="color:#abaeb3;">${sdata[r][c]}</td>`;
+								  }).join("")+'</tr>'
+							   }).join("")   + '</tbody></table>';   
+document.getElementById("sudokugrid").innerHTML=grdhtml;	
+
+
+var cells = document.querySelectorAll('#sudokugrid td');
+
+for (var i = 0; i < cells.length; i++) {
+	cells[i].addEventListener('click', function() {
+	r=this.getAttribute("r");
+	c=this.getAttribute("c");			
+	if(sdata[r][c]=="0"){
+		// Remove the selected class from all cells
+		for (var j = 0; j < cells.length; j++) {
+			cells[j].classList.remove('selected');
+		}
+		// Add the selected class to the clicked cell
+		this.classList.add('selected');	
+		currentR  =r;
+		currentC  =c;
+		currentID =9*parseInt(r) + parseInt(c);
+	  }
+	});
+}
+
+function bc(){
+      if (currentID){
+	  if(event.target.innerText=="C"){
+          cells[currentID].innerText="";
+		} else{
+		  cells[currentID].innerText=event.target.innerText ; 
+		} 
+	   }
+}
+
+function selCell(r,c){
+	if(sdata[r][c]=="0"){
+		// Remove the selected class from all cells
+		for (var j = 0; j < cells.length; j++) {
+			cells[j].classList.remove('selected');
+		}		
+		currentID =9*parseInt(r) + parseInt(c);
+		currentR  =r;
+		currentC  =c;		
+		cells[currentID].classList.add('selected');	
+	}	
+}	
+
+
+function firstSelection(){
+	for (var r = 0; r < 9; r++) {
+		for (var c = 0; c < 9; c++) {
+		
+		   if(sdata[r][c]=="0"){
+			  selCell(r,c); 
+			  return;
+		   }
+		}
+	}
+}
+
+
+function mvr(){
+  NextR=parseInt(currentR);
+  NextC=parseInt(currentC);
+  for (var c = NextC+1; c < 9; c++){
+     if(sdata[NextR][c]=="0"){
+        selCell(NextR,c);
+		return
+	 }
+  }
+}
+
+function mvl(){
+  NextR=parseInt(currentR);
+  NextC=parseInt(currentC);
+  for (var c = NextC-1; c >=0; c--){
+     if(sdata[NextR][c]=="0"){
+        selCell(NextR,c);
+		return
+	 }
+  }
+}
+
+function mvd(){
+  NextR=parseInt(currentR);
+  NextC=parseInt(currentC);
+  for (var r = NextR+1; r < 9; r++){
+     if(sdata[r][NextC]=="0"){
+        selCell(r,NextC);
+		return
+	 }
+  }
+}
+
+function mvu(){
+  NextR=parseInt(currentR);
+  NextC=parseInt(currentC);
+  for (var r = NextR-1; r >=0; r--){
+     if(sdata[r][NextC]=="0"){
+        selCell(r,NextC);
+		return
+	 }
+  }
+}
+
+firstSelection();
+</script
+</html>
