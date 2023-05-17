@@ -69,26 +69,29 @@
 	<div id="scanDiv">
 	<p>Ensure that a clear image of the puzzle is covered within the red box before clicking on the Convert button</p>
     <div id="videoElement">
-      <video autoplay="true"></video>
+      <video id="myVideo" autoplay="true"></video>
       <div id="guide"></div>
     </div>
     <button id="snap">Convert</button>
 	</div>
-    <canvas id="canvas" width="80%" height="80%"></canvas>
+    <canvas id="canvas"></canvas>
     <p id="ocrResult"></p>
     <script>
 function cpsd(){	
       document.getElementById("scanDiv").style.display="block";    	  
-      var video = document.querySelector("#videoElement video");
       var canvas = document.querySelector('#canvas');
-      var context = canvas.getContext('2d');
+      const videoElement = document.getElementById('myVideo');
+      const canvasElement = document.getElementById('canvas');
+      const canvasContext = canvasElement.getContext('2d');	  
+	  
+	  
       var snap = document.querySelector("#snap");
       var ocrResult = document.querySelector("#ocrResult");
 
       if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: {facingMode: "environment"} })
           .then(function (stream) {
-            video.srcObject = stream;
+            videoElement.srcObject = stream;
 			document.getElementById("guide").style.display="block";
           })
           .catch(function (err0r) {
@@ -97,20 +100,19 @@ function cpsd(){
       }
 
       snap.onclick = function() {
-        const guideRect = guide.getBoundingClientRect();
-        const videoRect = video.getBoundingClientRect();
+	 
+		
 
-        const scaleX = video.videoWidth / videoRect.width;
-        const scaleY = video.videoHeight / videoRect.height;
-
-        const guideX = (guideRect.x - videoRect.x) * scaleX;
-        const guideY = (guideRect.y - videoRect.y) * scaleY;
-        const guideWidth = guideRect.width * scaleX;
-        const guideHeight = guideRect.height * scaleY;
-
-        context.drawImage(video, guideX, guideY, guideWidth, guideHeight, 0, 0, canvas.width, canvas.height);
-        
-        var imgData = canvas.toDataURL();
+	  
+        // Resize the canvas to fit the video
+        canvasElement.width = videoElement.videoWidth;
+        canvasElement.height = videoElement.videoHeight;
+        // Draw the current frame of the video onto the canvas
+        canvasContext.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+	  
+	  
+	  
+        var imgData = canvasElement.toDataURL();
         Tesseract.recognize(
           imgData,
           'eng',
@@ -122,6 +124,9 @@ function cpsd(){
         })
       }
 }
+
+
+
     </script>
   </body>
 </html>
