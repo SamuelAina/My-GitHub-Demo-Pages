@@ -50,12 +50,11 @@
 		#guide {
 		  border: 2px solid red;
 		  position: absolute;
-		  height: 480px;
-		  width: 480px;
+		  height: 400px;
+		  width: 400px;
 		  left: 50%;
 		  top: 50%;
 		  transform: translate(-50%, -50%);
-		  display:none;
 		}
 		#scanDiv {
 		  display:none;
@@ -63,8 +62,9 @@
     </style>
   </head>
   <body>
+    <div class="container">
     <button onclick="cpsd()">Scan Sudoku</button>
-	<div id="scanDiv">
+	<div id="scanDiv" >
 	<p>Ensure that a clear image of the puzzle is covered within the red box before clicking on the Convert button</p>
     <div id="videoElement">
       <video autoplay="true"></video>
@@ -73,9 +73,9 @@
 
     <button id="snap">Convert</button>
 	</div>
-<canvas id="canvas" width="480" height="480"></canvas>
+    <canvas id="canvas" width="400" height="400"></canvas>
     <p id="ocrResult"></p>
-    
+    <div>
     
     <script>
 function cpsd(){	
