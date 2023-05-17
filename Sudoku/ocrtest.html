@@ -4,33 +4,45 @@
     <title>Accessing Mobile Camera with JavaScript</title>
     <script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
     <style>
-      #videoElement {
-        position: relative;
-        width: 640px;
-        height: 480px;
-      }
-      #guide {
-        border: 2px solid red;
-        position: absolute;
-        height: 200px;
-        width: 200px;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
+		#videoElement {
+		position: relative;
+		width: 640px;
+		height: 480px;
+		}
+
+		#guide {
+		  border: 2px solid red;
+		  position: absolute;
+		  height: 400px;
+		  width: 400px;
+		  left: 50%;
+		  top: 50%;
+		  transform: translate(-50%, -50%);
+		  display:none;
+		}
+		#scanDiv {
+		  display:none;
+		}		
     </style>
   </head>
   <body>
+    <button onclick="cpsd()">Scan Sudoku</button>
+	<div id="scanDiv">
+	<p>Ensure that a clear image of the puzzle is covered within the red box before clicking on the Convert button</p>
     <div id="videoElement">
       <video autoplay="true"></video>
       <div id="guide"></div>
     </div>
 
-    <button id="snap">Capture</button>
-    <canvas id="canvas" width="200" height="200"></canvas>
+    <button id="snap">Convert</button>
+	</div>
+<canvas id="canvas" width="400" height="400"></canvas>
     <p id="ocrResult"></p>
-
+    
+    
     <script>
+function cpsd(){	
+      document.getElementById("scanDiv").style.display="block";    	  
       var video = document.querySelector("#videoElement video");
       var canvas = document.querySelector('#canvas');
       var context = canvas.getContext('2d');
@@ -38,9 +50,10 @@
       var ocrResult = document.querySelector("#ocrResult");
 
       if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: {facingMode:"environment"} })
+        navigator.mediaDevices.getUserMedia({ video: {facingMode: "environment"} })
           .then(function (stream) {
             video.srcObject = stream;
+			document.getElementById("guide").style.display="block";
           })
           .catch(function (err0r) {
             console.log("Something went wrong!");
@@ -48,16 +61,31 @@
       }
 
       snap.onclick = function() {
-        context.drawImage(video, 220, 140, 200, 200, 0, 0, 200, 200);
+        const guideRect = guide.getBoundingClientRect();
+        const videoRect = video.getBoundingClientRect();
+
+        const scaleX = video.videoWidth / videoRect.width;
+        const scaleY = video.videoHeight / videoRect.height;
+
+        const guideX = (guideRect.x - videoRect.x) * scaleX;
+        const guideY = (guideRect.y - videoRect.y) * scaleY;
+        const guideWidth = guideRect.width * scaleX;
+        const guideHeight = guideRect.height * scaleY;
+
+        context.drawImage(video, guideX, guideY, guideWidth, guideHeight, 0, 0, canvas.width, canvas.height);
+        
         var imgData = canvas.toDataURL();
         Tesseract.recognize(
           imgData,
           'eng',
           { logger: m => console.log(m) }
         ).then((data) => {
-          ocrResult.innerText = data.text;
+            ocrResult.innerText = data.text;
+			document.getElementById("guide").style.display="none";
+			document.getElementById("scanDiv").style.display="none";		  
         })
       }
+}
     </script>
   </body>
 </html>
