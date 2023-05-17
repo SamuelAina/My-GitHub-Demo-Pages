@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Accessing Mobile Camera with JavaScript</title>
+    <script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+    <style>
+      #videoElement {
+        position: relative;
+        width: 640px;
+        height: 480px;
+      }
+      #guide {
+        border: 2px solid red;
+        position: absolute;
+        height: 200px;
+        width: 200px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="videoElement">
+      <video autoplay="true"></video>
+      <div id="guide"></div>
+    </div>
+
+    <button id="snap">Capture</button>
+    <canvas id="canvas" width="200" height="200"></canvas>
+    <p id="ocrResult"></p>
+
+    <script>
+      var video = document.querySelector("#videoElement video");
+      var canvas = document.querySelector('#canvas');
+      var context = canvas.getContext('2d');
+      var snap = document.querySelector("#snap");
+      var ocrResult = document.querySelector("#ocrResult");
+
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+          })
+          .catch(function (err0r) {
+            console.log("Something went wrong!");
+          });
+      }
+
+      snap.onclick = function() {
+        context.drawImage(video, 220, 140, 200, 200, 0, 0, 200, 200);
+        var imgData = canvas.toDataURL();
+        Tesseract.recognize(
+          imgData,
+          'eng',
+          { logger: m => console.log(m) }
+        ).then((data) => {
+          ocrResult.innerText = data.text;
+        })
+      }
+    </script>
+  </body>
+</html>
