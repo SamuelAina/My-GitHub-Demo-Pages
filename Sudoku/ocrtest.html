@@ -115,7 +115,7 @@ function cpsd(){
         var imgData = canvasElement.toDataURL();
         Tesseract.recognize(
           imgData,
-          'eng',
+          'script/Latin',
           { logger: m => console.log(m) }
         ).then((data) => {
             ocrResult.innerText = data.text;
