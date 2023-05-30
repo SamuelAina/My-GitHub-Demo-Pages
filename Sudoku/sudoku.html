@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="En">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudoku Puzzle</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  
     <style>
         table {
             margin: 0 auto;
@@ -63,14 +62,24 @@
 		
         .selected {
             background-color: #ddd;
-        }		
+        }	
+        h7{
+            color: #f80707;
+            font-weight: 600;
+            display: none;
+        }	
     </style>
 
 </head>
 <body>
+    <div class="navbar" id="myNavbar">
+        <a href="AdvWchatMyQestionlist.html">Show My questions</a>
+        <a href="#item2">Return to Main Page</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
     <div id="sudokugrid"></div>
-  
- 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
@@ -88,64 +97,66 @@
                         <button onclick="bc()" type="button" class="btn btn-secondary">C</button>
                     </div>
                     <div class="direction-keys mt-4">
+                        <button onclick="_new()" type="button" class="btn btn-primary"><span style="font-size: 13px;">New</span></button><!--New -->
                         <button onclick="mvl()" type="button" class="btn btn-primary">&#8592;</button><!--Left -->
                         <button onclick="mvu()" type="button" class="btn btn-primary">&#8593;</button> <!--Up -->
                         <button onclick="mvd()" type="button" class="btn btn-primary">&#8595;</button><!--Down -->
                         <button onclick="mvr()" type="button" class="btn btn-primary">&#8594;</button><!--Right -->
+                        <button onclick="slv()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Solve</span></button><!--Solve -->
+                        <button onclick="cmpl()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Done</span></button><!--Completed -->
                     </div>
+                    <h7 id="hwarning">INVALID NUMBERS IN THE PUZZLE</h7>
                 </div>
             </div>
         </div>
     </div>
 
 <script defer>
-sdata = [
-  ['5', '3', '0', '0', '7', '0', '0', '0', '0'],
-  ['6', '0', '0', '1', '9', '5', '0', '0', '0'],
-  ['0', '9', '8', '0', '0', '0', '0', '6', '0'],
-  ['8', '0', '0', '0', '6', '0', '0', '0', '3'],
-  ['4', '0', '0', '8', '0', '3', '0', '0', '1'],
-  ['7', '0', '0', '0', '2', '0', '0', '0', '6'],
-  ['0', '6', '0', '0', '0', '0', '2', '8', '0'],
-  ['0', '0', '0', '4', '1', '9', '0', '0', '5'],
-  ['0', '0', '0', '0', '8', '0', '0', '7', '9']
-];
+sdata = [];
 
 var currentR, currentC,currentID;
-
-var grdhtml='<table><tbody>'+[0,1,2,3,4,5,6,7,8].map(function(r){return  '<tr>'+[0,1,2,3,4,5,6,7,8].map(function(c){
-									  return (sdata[r][c]=="0")?`<td  r=${r} c=${c} style="color:black;"></td>` : `<td r=${r} c=${c} style="color:#abaeb3;">${sdata[r][c]}</td>`;
-								  }).join("")+'</tr>'
-							   }).join("")   + '</tbody></table>';   
-document.getElementById("sudokugrid").innerHTML=grdhtml;	
-
-
 var cells = document.querySelectorAll('#sudokugrid td');
+var user_sdata =[];
+//display(sdata);
+_new();
 
-for (var i = 0; i < cells.length; i++) {
-	cells[i].addEventListener('click', function() {
-	r=this.getAttribute("r");
-	c=this.getAttribute("c");			
-	if(sdata[r][c]=="0"){
-		// Remove the selected class from all cells
-		for (var j = 0; j < cells.length; j++) {
-			cells[j].classList.remove('selected');
-		}
-		// Add the selected class to the clicked cell
-		this.classList.add('selected');	
-		currentR  =r;
-		currentC  =c;
-		currentID =9*parseInt(r) + parseInt(c);
-	  }
-	});
+function display(sdata){
+    document.getElementById('hwarning').style.display = 'none';
+    user_sdata = JSON.parse(JSON.stringify(sdata))
+    var grdhtml='<table><tbody>'+[0,1,2,3,4,5,6,7,8].map(function(r){return  '<tr>'+[0,1,2,3,4,5,6,7,8].map(function(c){
+                                        return (sdata[r][c]=="0")?`<td  r=${r} c=${c} style="color:black;"></td>` : `<td r=${r} c=${c} style="color:#abaeb3;">${sdata[r][c]}</td>`;
+                                    }).join("")+'</tr>'
+                                }).join("")   + '</tbody></table>';   
+    document.getElementById("sudokugrid").innerHTML=grdhtml;
+    cells = document.querySelectorAll('#sudokugrid td');
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', function() {
+        r=this.getAttribute("r");
+        c=this.getAttribute("c");			
+        if(sdata[r][c]=="0"){
+            // Remove the selected class from all cells
+            for (var j = 0; j < cells.length; j++) {
+                cells[j].classList.remove('selected');
+            }
+            // Add the selected class to the clicked cell
+            this.classList.add('selected');	
+            currentR  =r;
+            currentC  =c;
+            currentID =9*parseInt(r) + parseInt(c);
+        }
+        });
+    }
+    firstSelection();
 }
-
+	
 function bc(){
-      if (currentID){
+      if (typeof currentID !== 'undefined'){
 	  if(event.target.innerText=="C"){
           cells[currentID].innerText="";
-		} else{
+          user_sdata[currentR][currentC]=0;
+		} else{          
 		  cells[currentID].innerText=event.target.innerText ; 
+          user_sdata[currentR][currentC]=parseInt(event.target.innerText);
 		} 
 	   }
 }
@@ -163,11 +174,9 @@ function selCell(r,c){
 	}	
 }	
 
-
 function firstSelection(){
 	for (var r = 0; r < 9; r++) {
-		for (var c = 0; c < 9; c++) {
-		
+		for (var c = 0; c < 9; c++) {		
 		   if(sdata[r][c]=="0"){
 			  selCell(r,c); 
 			  return;
@@ -175,7 +184,6 @@ function firstSelection(){
 		}
 	}
 }
-
 
 function mvr(){
   NextR=parseInt(currentR);
@@ -221,6 +229,152 @@ function mvu(){
   }
 }
 
-firstSelection();
+function _rd(f,d){
+ let data = {
+				token:"EF016773-E1D0-4203-86A0-489689BCA865",
+				func: f,
+				param:d
+			};
+	fetch("https://ainat-385820.ew.r.appspot.com/rcp", {
+	method: "POST",
+	headers: {'Content-Type': 'application/json'}, 
+	body:JSON.stringify(data)
+	}).then(response => {
+		console.log("response",response);
+		//document.getElementById('txtSd').value=response;
+		return response.text();
+	   }).then(result =>{
+	       console.log("result",JSON.parse(result));
+		   sdata=JSON.parse(result)
+           display(sdata);
+           //document.getElementById('txtSd').value=result;
+	   }); 
+ }
+
+function _new(){
+    _rd("getSudoku",{}); 
+} 
+
+function cmpl(){
+    checkIfvalid=isValidSudoku(user_sdata);
+    if(JSON.stringify(checkIfvalid)=="true"){
+         document.getElementById('hwarning').style.display = 'none';         
+    }else{
+         document.getElementById('hwarning').style.display = 'block'; 
+    }
+}
+
+function isValidSudoku(board) {
+    for (let i = 0; i < 9; i++) {
+        let row = new Set(),
+            col = new Set(),
+            box = new Set();
+
+        for (let j = 0; j < 9; j++) {
+            let _row = board[i][j];
+            let _col = board[j][i];
+            let _box = board[3 * Math.floor(i / 3) + Math.floor(j / 3)][3 * (i % 3) + (j % 3)];
+
+            if (row.has(_row) || _row < 1 || _row > 9) {
+                return {"type":"row","C":i+1,"R":j+1};
+            }
+            row.add(_row);
+
+            if (col.has(_col) || _col < 1 || _col > 9) {
+                return {"type":"col","C":i+1,"R":j+1};
+            }
+            col.add(_col);
+
+            if (box.has(_box) || _box < 1 || _box > 9) {
+                return {"type":"box","C":i+1,"R":j+1};
+            }
+            box.add(_box);
+        }
+    }
+    return true;
+}
+
+function solveSudokuWithForcingChains(puzzle) {
+  const size = 9; // Size of the Sudoku grid
+
+  // Function to check if a value is valid in a specific cell
+  function isValid(board, row, col, num) {
+    // Check row
+    for (let i = 0; i < size; i++) {
+      if (board[row][i] === num) {
+        return false;
+      }
+    }
+
+    // Check column
+    for (let i = 0; i < size; i++) {
+      if (board[i][col] === num) {
+        return false;
+      }
+    }
+
+    // Check box
+    const boxRow = Math.floor(row / 3) * 3;
+    const boxCol = Math.floor(col / 3) * 3;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (board[boxRow + i][boxCol + j] === num) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Function to solve the Sudoku puzzle using forcing chains
+  function solve(board) {
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        if (board[row][col] === 0) { // Empty cell
+          for (let num = 1; num <= size; num++) {
+            if (isValid(board, row, col, num)) {
+              board[row][col] = num;
+              if (solve(board)) {
+                return true;
+              }
+              board[row][col] = 0; // Undo the choice
+            }
+          }
+          return false; // No valid number found, backtrack
+        }
+      }
+    }
+    return true; // Puzzle solved
+  }
+
+  // Convert the puzzle into a 2D array (9x9 grid)
+  const board = puzzle;//.map(row => row.split('').map(Number));
+
+  // Solve the puzzle
+  if (solve(board)) {
+    // Convert the 2D array back to the original puzzle format
+    //const solvedPuzzle = board.map(row => row.join(''));
+    return board;
+  } else {
+    return false;//"No solution found.";
+  }
+}
+
+function slv(){
+    s=solveSudokuWithForcingChains(user_sdata)
+    console.log(s)
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            if(cells[9*parseInt(row) + parseInt(col)].innerText==""){
+                cells[9*parseInt(row) + parseInt(col)].innerText=s[row][col] ; 
+                user_sdata[currentR][currentC]=s[row][col];
+            }
+        }
+    }
+    /*
+
+    */
+}
 </script
 </html>
