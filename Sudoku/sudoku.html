@@ -6,16 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1em;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+
         table {
             margin: 0 auto;
             width: 370px;
@@ -26,8 +17,9 @@
 		table tr:nth-child(3) td {
 			border-bottom: 3px solid #000; 
 		}
+		
 		table tr:nth-child(6) td {
-			border-bottom: 3px solid #000; 
+			border-bottom: 3px solid #000;
 		}
 		
 		table tr td:nth-child(3) {
@@ -46,6 +38,7 @@
             vertical-align: middle;
             font-size: 20px;
         }
+		
         input {
             width: 100%;
             height: 100%;
@@ -53,6 +46,7 @@
             text-align: center;
             border: none;
         }
+		
         input:focus {
             outline: none;
         }
@@ -62,38 +56,71 @@
             margin: 5px;
             font-size: 24px;
         }
+		
         .direction-keys {
             display: flex;
             justify-content: center;
             align-items: center;
         }
+		
         .selected {
             background-color: #ddd;
         } 
+		
         .warning {
             color: #f80707;
             font-weight: 600;
             display: none;
-        }
-        .navbar {
+        }  
+		
+		.navbar {
             display: flex;
             justify-content: space-around;
             padding: 1em;
             background: #f8f9fa;
         }
+		
+        #messageBox {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 100px;
+        }
+        #messageBoxContent {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+        }
+
     </style>
 
 </head>
 <body>
+<div id="messageBox">
+  <div id="messageBoxContent">
+    <p id="messageBoxText"></p>
+  </div>
+</div>
+    
+    <div class="container">
     <div class="navbar" id="myNavbar">
         <a href="AdvWchatMyQestionlist.html">Show My Sudokus</a>
         <a href="#item2">Return to Main Page</a>
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
             <i class="fa fa-bars"></i>
         </a>
-    </div>
-    <div id="sudokugrid"></div>
-    <div class="container">
+    </div>	
+	<div id="sudokugrid"></div>
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
                 <div class="text-center">
@@ -110,15 +137,19 @@
                         <button onclick="bc()" type="button" class="btn btn-secondary">C</button>
                     </div>
                     <div class="direction-keys mt-4">
-                        <button onclick="_new()" type="button" class="btn btn-primary"><span style="font-size: 13px;">New</span></button><!--New -->
                         <button onclick="mvl()" type="button" class="btn btn-primary">&#8592;</button><!--Left -->
                         <button onclick="mvu()" type="button" class="btn btn-primary">&#8593;</button> <!--Up -->
                         <button onclick="mvd()" type="button" class="btn btn-primary">&#8595;</button><!--Down -->
                         <button onclick="mvr()" type="button" class="btn btn-primary">&#8594;</button><!--Right -->
+                    </div>
+                    <div class="direction-keys mt-4">
+                        <button onclick="_new()" type="button" class="btn btn-primary"><span style="font-size: 13px;">New</span></button><!--New -->
                         <button onclick="slv()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Solve</span></button><!--Solve -->
+						<button onclick="rst()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Reset</span></button><!--Reset -->
                         <button onclick="cmpl()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Done</span></button><!--Completed -->
                     </div>
-                    <h7 id="hwarning">INVALID NUMBERS IN THE PUZZLE</h7>
+					
+                    
                 </div>
             </div>
         </div>
@@ -134,7 +165,6 @@ var user_sdata =[];
 _new();
 
 function display(sdata){
-    document.getElementById('hwarning').style.display = 'none';
     user_sdata = JSON.parse(JSON.stringify(sdata))
     var grdhtml='<table><tbody>'+[0,1,2,3,4,5,6,7,8].map(function(r){return  '<tr>'+[0,1,2,3,4,5,6,7,8].map(function(c){
                                         return (sdata[r][c]=="0")?`<td  r=${r} c=${c} style="color:black;"></td>` : `<td r=${r} c=${c} style="color:#abaeb3;">${sdata[r][c]}</td>`;
@@ -271,9 +301,9 @@ function _new(){
 function cmpl(){
     checkIfvalid=isValidSudoku(user_sdata);
     if(JSON.stringify(checkIfvalid)=="true"){
-         document.getElementById('hwarning').style.display = 'none';         
+         showMessage("ALL SOLVED!!!");         
     }else{
-         document.getElementById('hwarning').style.display = 'block'; 
+         showMessage("INVALID NUMBERS FOUND IN THE PUZZLE"); 
     }
 }
 
@@ -385,9 +415,20 @@ function slv(){
             }
         }
     }
-    /*
+}
 
-    */
+function rst(){
+   display(sdata);
+}
+
+
+function showMessage(msg) {
+	document.getElementById('messageBox').style.display = 'block';
+	document.getElementById('messageBoxText').innerText = msg;
+
+	setTimeout(function() {
+		document.getElementById('messageBox').style.display = 'none';
+	}, 3000);
 }
 </script
 </body>
