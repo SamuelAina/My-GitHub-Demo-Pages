@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sudoku Puzzle</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
     <style>
-
         table {
             margin: 0 auto;
             width: 370px;
@@ -111,15 +109,15 @@
     <p id="messageBoxText"></p>
   </div>
 </div>
-    
     <div class="container">
     <div class="navbar" id="myNavbar">
-        <a href="AdvWchatMyQestionlist.html">Show My Sudokus</a>
+        <a href="mysudoku.html">Show My Sudokus</a>
         <a href="#item2">Return to Main Page</a>
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
             <i class="fa fa-bars"></i>
         </a>
     </div>	
+	<h2 style="text-align: center;" id="sudokuid"></h2>
 	<div id="sudokugrid"></div>
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
@@ -156,16 +154,48 @@
     </div>
 
 <script defer>
-sdata = [];
-
+var hist_data;
+var _user_sdata;
+var _sdata;
+var user_sdata =[];
+var sdata = [];
 var currentR, currentC,currentID;
 var cells = document.querySelectorAll('#sudokugrid td');
-var user_sdata =[];
-//display(sdata);
-_new();
+var sudokuid=localStorage.getItem("mySudokuPZ_curr_sudokuid");
+try {
+	_user_sdata =JSON.parse(localStorage.getItem("mySudokuPZ_curr_user_sdata"));
+} catch (e) {
+	_user_sdata="";
+}
+
+try {
+	_sdata = JSON.parse(localStorage.getItem("mySudokuPZ_curr_sdata"));
+} catch (e) {
+	_sdata="";
+}
+
+if(Array.isArray(_user_sdata)){
+   user_sdata=_user_sdata;
+   if(Array.isArray(_sdata)){        
+		sdata=_sdata;
+		display(sdata);	
+		for (var r = 0; r < 9; r++) {
+			for (var c = 0; c < 9; c++) {	
+			   if(sdata[r][c] !== user_sdata[r][c]){
+				  cells[9*parseInt(r) + parseInt(c)].innerHTML=`<b>${user_sdata[r][c]}<b>`;//;
+			   }
+			}
+		}		
+	}
+}else{
+    _new();
+}
+//
+
+
 
 function display(sdata){
-    user_sdata = JSON.parse(JSON.stringify(sdata))
+	document.getElementById("sudokuid").innerText="Puzzle "+sudokuid;
     var grdhtml='<table><tbody>'+[0,1,2,3,4,5,6,7,8].map(function(r){return  '<tr>'+[0,1,2,3,4,5,6,7,8].map(function(c){
                                         return (sdata[r][c]=="0")?`<td  r=${r} c=${c} style="color:black;"></td>` : `<td r=${r} c=${c} style="color:#abaeb3;">${sdata[r][c]}</td>`;
                                     }).join("")+'</tr>'
@@ -196,11 +226,13 @@ function bc(){
       if (typeof currentID !== 'undefined'){
 	  if(event.target.innerText=="C"){
           cells[currentID].innerText="";
-          user_sdata[currentR][currentC]=0;
+          user_sdata[currentR][currentC]=0;		  
 		} else{          
-		  cells[currentID].innerText=event.target.innerText ; 
+		  cells[currentID].innerHTML=`<b>${event.target.innerText}<b>`;
           user_sdata[currentR][currentC]=parseInt(event.target.innerText);
 		} 
+		localStorage.setItem("mySudokuPZ_curr_user_sdata", JSON.stringify(user_sdata));
+		localStorage.setItem("mySudokuPZ_curr_sdata", JSON.stringify(sdata));		
 	   }
 }
 
@@ -283,20 +315,126 @@ function _rd(f,d){
 	headers: {'Content-Type': 'application/json'}, 
 	body:JSON.stringify(data)
 	}).then(response => {
-		console.log("response",response);
-		//document.getElementById('txtSd').value=response;
 		return response.text();
 	   }).then(result =>{
 	       console.log("result",JSON.parse(result));
-		   sdata=JSON.parse(result)
+		   result=JSON.parse(result)[0];
+		   sdata=JSON.parse(result.partial);
+		   user_sdata=JSON.parse(result.partial);
+		   sudokuid=result.ID;
            display(sdata);
-           //document.getElementById('txtSd').value=result;
+		   
+		   localStorage.setItem("mySudokuPZ_curr_sudokuid", sudokuid);
+		   localStorage.setItem("mySudokuPZ_curr_user_sdata", JSON.stringify(user_sdata));
+		   localStorage.setItem("mySudokuPZ_curr_sdata", JSON.stringify(sdata));		   
 	   }); 
  }
 
+function currentDayTime()
+{
+	const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+	const locale = navigator.language || 'en-US';  // Default to 'en-US' if the browser doesn't provide a locale
+	const currentDateTime = new Date().toLocaleString(locale, options);
+	return currentDateTime;
+}
+
+
+function skillLevel(a) 
+{
+    let count = 0;
+    // Count the number of zeros in the array
+    for(let i = 0; i < a.length; i++) {
+        for(let j = 0; j < a[i].length; j++) {
+            if(a[i][j] === 0) {
+                count++;
+            }
+        }
+    }
+
+    // Rate the Sudoku
+    if (count < 20) {
+        return 'easy';
+    } else if (count <= 40) {
+        return 'medium';
+    } else {
+        return 'hard';
+    }
+}
+
+function completed(a) {
+    for(let i = 0; i < a.length; i++) {
+        for(let j = 0; j < a[i].length; j++) {
+            if(a[i][j] === 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function validSolution(a){
+    _v=isValidSudoku(a);
+    if(JSON.stringify(_v)=="true"){
+         return true;         
+    }else{
+         return false; 
+    }
+}
+/*
 function _new(){
+  my_current_sudoku={
+				 "sudokuid":sudokuid,
+				 "date":currentDayTime(),
+				 "skillLevel":skillLevel(sdata),
+				 "sdata":sdata,
+				 "user_sdata":user_sdata,
+				 "completed":completed(user_sdata),
+				 "validSolution":validSolution(user_sdata)
+				};
+  try{
+         hist_data=JSON.parse(localStorage.getItem("hist_data"));
+		 if (!(hist_data.some(e => e.sdata === sdata))) { 
+			 hist_data.push(my_current_sudoku);
+			 localStorage.setItem("hist_data", JSON.stringify(hist_data));
+		 }		 
+     }catch{
+	     localStorage.setItem("hist_data", "["+JSON.stringify(my_current_sudoku)+"]");
+	 }   
     _rd("getSudoku",{}); 
 } 
+*/
+
+function _new() {
+    const my_current_sudoku = {
+        "sudokuid": sudokuid,
+        "date": currentDayTime(),
+        "skillLevel": skillLevel(sdata),
+        "sdata": sdata,
+        "user_sdata": user_sdata,
+        "completed": completed(user_sdata),
+        "validSolution": validSolution(user_sdata)
+    };
+    console.log(my_current_sudoku);
+    try {
+        let hist_data = localStorage.getItem("hist_data");
+
+        if (hist_data) {
+            hist_data = JSON.parse(hist_data);
+            if (!(hist_data.some(e => e.sudokuid === sudokuid))) { 
+                hist_data.push(my_current_sudoku);
+            }
+        } else {
+            hist_data = [my_current_sudoku];
+        }
+
+        localStorage.setItem("hist_data", JSON.stringify(hist_data));
+    } catch (error) {
+        console.error(error);
+        localStorage.setItem("hist_data", "["+JSON.stringify(my_current_sudoku)+"]");
+    }   
+    _rd("getSudoku",{}); 
+}
+
 
 function cmpl(){
     checkIfvalid=isValidSudoku(user_sdata);
@@ -406,7 +544,6 @@ function solveSudokuWithForcingChains(puzzle) {
 
 function slv(){
     s=solveSudokuWithForcingChains(user_sdata)
-    console.log(s)
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
             if(cells[9*parseInt(row) + parseInt(col)].innerText==""){
@@ -428,7 +565,7 @@ function showMessage(msg) {
 
 	setTimeout(function() {
 		document.getElementById('messageBox').style.display = 'none';
-	}, 3000);
+	}, 2000);
 }
 </script
 </body>
