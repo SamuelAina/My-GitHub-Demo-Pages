@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">	
+    <style>
+		body {
+		  font-family: Arial, sans-serif;
+		  margin: 0;
+		  padding: 0;
+		}
+		
+        .item {
+            position: relative;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .item-text {
+            margin-left: 30px;
+            text-align: left;
+            flex-grow: 1;
+        }
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+		
+    button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+    }
+    
+    button:hover {
+      background-color: #555;
+    }
+
+	.close-button {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		line-height: 20px;
+		text-align: center;
+		background-color: #333;
+		color: #fff;
+		border-radius: 50%;
+		cursor: pointer;
+		font-family: Arial, sans-serif;
+		font-size: 14px;
+		font-weight: bold;
+		padding: 2px;
+		margin: 2px;
+		user-select: none;
+	}
+
+	.close-button:hover {
+		background-color: #555;
+	}
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .container {
+      padding: 20px;
+      margin-top: 3px;
+      background: #ddd;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }	
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <p>
+	Your list of sudoku puzzles.
+	</p>
+    <div>
+        <label for="search">Search: </label>
+        <input id="search" type="text" onkeyup="filterItems()" placeholder="Type to filter.."></input>
+    </div>
+    <form id="itemList">
+        
+    </form>
+	<button id="okbtn" type="button" onclick="selectedItem()">OK</button>
+</div>
+<script>
+	function filterItems() {
+		let input, filter, itemList, items, txtValue;
+		input = document.getElementById("search");
+		filter = input.value.toUpperCase();
+		itemList = document.getElementById("itemList");
+		items = itemList.getElementsByClassName("item");
+		for (let i = 0; i < items.length; i++) {
+			txtValue = items[i].textContent || items[i].innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				items[i].classList.remove('hidden');
+			} else {
+				items[i].classList.add('hidden');
+			}
+		}
+	}
+
+
+	var _sudokuid;//=localStorage.getItem("mySudokuPZ_curr_sudokuid");
+	var _user_sdata;// =JSON.parse(localStorage.getItem("mySudokuPZ_curr_user_sdata"));
+	var _sdata;// = JSON.parse(localStorage.getItem("mySudokuPZ_curr_sdata"));
+	var mysudokuHist=JSON.parse(localStorage.getItem("hist_data"));
+	function selectedItem() {
+		const radios = document.getElementsByName('itemRadio');
+		for(let i = 0; i < radios.length; i++){
+			if(radios[i].checked){
+				//localStorage.setItem("currentQuestion", radios[i].parentNode.textContent.substring(1));
+
+				_sudokuid=radios[i].parentNode.getElementsByTagName("span")[1].getAttribute("id");
+				mysudokuHistItem =mysudokuHist.filter(obj => { return obj.sudokuid === _sudokuid })[0];
+				_user_sdata = mysudokuHistItem.user_sdata;
+				_sdata = mysudokuHistItem.sdata;
+				
+				localStorage.setItem("mySudokuPZ_curr_sudokuid", _sudokuid);
+				localStorage.setItem("mySudokuPZ_curr_user_sdata", JSON.stringify(_user_sdata));
+				localStorage.setItem("mySudokuPZ_curr_sdata", JSON.stringify(_sdata));
+				window.location.href = "sudoku.html";				
+				console.log(_sdata);
+				return;
+			}
+		}
+		alert('No item selected');
+	}
+	
+	function displaySudokus(){		 
+	 document.getElementById("okbtn").disabled=true;
+	 
+	 mysudokuHist=JSON.parse(localStorage.getItem("hist_data"));
+	 
+	 if(!(mysudokuHist === undefined || mysudokuHist.length == 0)){	   
+	   frmhtml = mysudokuHist.map(function(i){return `<div class="item"><span class="close-button" onclick="this.parentElement.remove()">X</span><input type="radio" name="itemRadio" class="itemRadio"><span id="${i.sudokuid}">Puzzle ${i.sudokuid} - Started ${i.date}. Skill level - ${i.skillLevel}. ${(i.completed ? "Completed":"Incomplete")} ${i.validSolution ? " and Correctly solved":""}</span></div>`}).join("");
+	   document.getElementById("itemList").innerHTML=frmhtml;   
+	   document.getElementById("okbtn").disabled=false;
+	   }
+	}
+	
+	displaySudokus();
+</script>
+</body>
+</html>
