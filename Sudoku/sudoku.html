@@ -141,18 +141,17 @@
                         <button onclick="mvr()" type="button" class="btn btn-primary">&#8594;</button><!--Right -->
                     </div>
                     <div class="direction-keys mt-4">
+						<button onclick="_sve()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Save</span></button><!--Save -->
                         <button onclick="_new()" type="button" class="btn btn-primary"><span style="font-size: 13px;">New</span></button><!--New -->
                         <button onclick="slv()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Solve</span></button><!--Solve -->
 						<button onclick="rst()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Reset</span></button><!--Reset -->
                         <button onclick="cmpl()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Done</span></button><!--Completed -->
                     </div>
-					
-                    
+					                  
                 </div>
             </div>
         </div>
     </div>
-
 <script defer>
 var hist_data;
 var _user_sdata;
@@ -317,8 +316,19 @@ function _rd(f,d){
 	}).then(response => {
 		return response.text();
 	   }).then(result =>{
+		   console.log("result",result);
 	       console.log("result",JSON.parse(result));
+		   if(!result){
+			   showMessage("NO MORE PUZZLES");
+			   return
+		   }
+		   
 		   result=JSON.parse(result)[0];
+		   if(result.length==0){
+			   showMessage("NO MORE PUZZLES");
+			   return
+		   }			   
+		   		   
 		   sdata=JSON.parse(result.partial);
 		   user_sdata=JSON.parse(result.partial);
 		   sudokuid=result.ID;
@@ -380,31 +390,17 @@ function validSolution(a){
          return false; 
     }
 }
-/*
-function _new(){
-  my_current_sudoku={
-				 "sudokuid":sudokuid,
-				 "date":currentDayTime(),
-				 "skillLevel":skillLevel(sdata),
-				 "sdata":sdata,
-				 "user_sdata":user_sdata,
-				 "completed":completed(user_sdata),
-				 "validSolution":validSolution(user_sdata)
-				};
-  try{
-         hist_data=JSON.parse(localStorage.getItem("hist_data"));
-		 if (!(hist_data.some(e => e.sdata === sdata))) { 
-			 hist_data.push(my_current_sudoku);
-			 localStorage.setItem("hist_data", JSON.stringify(hist_data));
-		 }		 
-     }catch{
-	     localStorage.setItem("hist_data", "["+JSON.stringify(my_current_sudoku)+"]");
-	 }   
-    _rd("getSudoku",{}); 
-} 
-*/
+
 
 function _new() {
+	_sve();
+	let hist_data = localStorage.getItem("hist_data");
+	var alreadyUsedIds = JSON.parse(hist_data).map(function(i){return i.sudokuid}).join("|");
+    _rd("getSudoku",{alreadyUsedIds:alreadyUsedIds}); 
+}
+
+
+function _sve(){
     const my_current_sudoku = {
         "sudokuid": sudokuid,
         "date": currentDayTime(),
@@ -416,25 +412,30 @@ function _new() {
     };
     console.log(my_current_sudoku);
     try {
-        let hist_data = localStorage.getItem("hist_data");
+        hist_data = localStorage.getItem("hist_data");
 
         if (hist_data) {
             hist_data = JSON.parse(hist_data);
-            if (!(hist_data.some(e => e.sudokuid === sudokuid))) { 
-                hist_data.push(my_current_sudoku);
-            }
-        } else {
-            hist_data = [my_current_sudoku];
+			hist_data_hit=hist_data.some(e => e.sudokuid === sudokuid);
+            if (hist_data_hit) {
+				if(sudokuid){
+					hist_data_hit=my_current_sudoku;
+				}
+            } else {
+				if(sudokuid){
+					hist_data.push(my_current_sudoku);
+				}				
+			}
+        } else {			
+            hist_data = [];
         }
 
         localStorage.setItem("hist_data", JSON.stringify(hist_data));
     } catch (error) {
         console.error(error);
         localStorage.setItem("hist_data", "["+JSON.stringify(my_current_sudoku)+"]");
-    }   
-    _rd("getSudoku",{}); 
+    }  
 }
-
 
 function cmpl(){
     checkIfvalid=isValidSudoku(user_sdata);
@@ -446,6 +447,8 @@ function cmpl(){
 }
 
 function isValidSudoku(board) {
+	if(!(Array.isArray(board) && board.length ==9)){return false}
+	
     for (let i = 0; i < 9; i++) {
         let row = new Set(),
             col = new Set(),
