@@ -146,7 +146,7 @@
                         <button onclick="_new()" type="button" class="btn btn-primary"><span style="font-size: 13px;">New</span></button><!--New -->
                         <button onclick="slv()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Solve</span></button><!--Solve -->
 						<button onclick="rst()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Reset</span></button><!--Reset -->
-                        <button onclick="cmpl()" type="button" class="btn btn-primary"><span style="font-size: 13px;">Done</span></button><!--Completed -->
+                        <button onclick="chk()" type="button" class="btn btn-primary"><span style="font-size: 13px;">check</span></button><!--Completed -->
                     </div>
 					                  
                 </div>
@@ -154,6 +154,11 @@
         </div>
     </div>
 <script defer>
+window.onbeforeunload = function(){
+   _sve();
+  //return 'Are you sure you want to leave?';
+};
+
 var hist_data;
 var _user_sdata;
 var _sdata;
@@ -190,9 +195,6 @@ if(Array.isArray(_user_sdata)){
 }else{
     _new();
 }
-//
-
-
 
 function display(sdata){
 	document.getElementById("sudokuid").innerText="Puzzle "+sudokuid;
@@ -219,6 +221,7 @@ function display(sdata){
         }
         });
     }
+	cells.forEach(function(i){i.style.color="black"});
     firstSelection();
 }
 	
@@ -341,17 +344,14 @@ function _rd(f,d){
 	   }); 
  }
 
-function currentDayTime()
-{
+function currentDayTime(){
 	const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
 	const locale = navigator.language || 'en-US';  // Default to 'en-US' if the browser doesn't provide a locale
 	const currentDateTime = new Date().toLocaleString(locale, options);
 	return currentDateTime;
 }
 
-
-function skillLevel(a) 
-{
+function skillLevel(a) {
     let count = 0;
     // Count the number of zeros in the array
     for(let i = 0; i < a.length; i++) {
@@ -392,7 +392,6 @@ function validSolution(a){
     }
 }
 
-
 function _new() {
 	_sve();
 	let hist_data = localStorage.getItem("hist_data");
@@ -400,9 +399,8 @@ function _new() {
     _rd("getSudoku",{alreadyUsedIds:alreadyUsedIds}); 
 }
 
-
 function _sve(){
-    const my_current_sudoku = {
+    my_current_sudoku = {
         "sudokuid": sudokuid,
         "date": currentDayTime(),
         "skillLevel": skillLevel(sdata),
@@ -415,12 +413,21 @@ function _sve(){
     try {
         hist_data = localStorage.getItem("hist_data");
 
-        if (hist_data) {
+        if (hist_data) {			
             hist_data = JSON.parse(hist_data);
 			hist_data_hit=hist_data.some(e => e.sudokuid === sudokuid);
+			//hist_data_hit_obj=hist_data.find(e => e.sudokuid === sudokuid);
+			
+			hist_data_hit_idx = hist_data.map(function(e) { return e.sudokuid; }).indexOf(sudokuid);			
+			//console.log("**** index ****",hist_data_hit);
             if (hist_data_hit) {
 				if(sudokuid){
-					hist_data_hit=my_current_sudoku;
+					console.log("<-hist_data_hit->",hist_data_hit);
+					console.log("<-hist_data->",hist_data);
+					console.log("<-sudokuid->",sudokuid);
+					console.log("<-hist_data_hit_idx->",hist_data_hit_idx);
+					console.log("<-my_current_sudoku->",my_current_sudoku);
+					hist_data[hist_data_hit_idx]=my_current_sudoku;
 				}
             } else {
 				if(sudokuid){
@@ -438,12 +445,15 @@ function _sve(){
     }  
 }
 
-function cmpl(){
+function chk(){
+	cells.forEach(function(i){i.style.color="black"});
     checkIfvalid=isValidSudoku(user_sdata);
     if(JSON.stringify(checkIfvalid)=="true"){
          showMessage("ALL SOLVED!!!");         
     }else{
-         showMessage("INVALID NUMBERS FOUND IN THE PUZZLE"); 
+		 console.log(checkIfvalid);		 
+		 cells[9*parseInt(checkIfvalid.R-1) + parseInt(checkIfvalid.C-1)].style.color="red"
+         showMessage("INVALID NUMBERS FOUND OR INCOMPLETE PUZZLE"); 
     }
 }
 
@@ -556,12 +566,15 @@ function slv(){
             }
         }
     }
+	user_sdata=s;
+	_sve();
 }
 
 function rst(){
+   user_sdata=sdata;
    display(sdata);
+   _sve();
 }
-
 
 function showMessage(msg) {
 	document.getElementById('messageBox').style.display = 'block';
