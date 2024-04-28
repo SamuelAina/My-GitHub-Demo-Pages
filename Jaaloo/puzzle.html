@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaaLoo Puzzle</title>
+    <style>
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            max-width: 300px; /* Control the size of the grid */
+        }
+        .grid-item {
+            
+            margin: 1px; /* Optional: for slight spacing between cells */
+            position: relative;
+            width: 100%;
+        }
+        .grid-item:before {
+            content: "";
+            display: block;
+            padding-top: 100%; /* This creates a square aspect ratio */
+        }
+        .grid-item input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 16px; /* Adjust as needed */
+            border: 1px solid #ccc; /* Optional: adds a border to each input */
+            box-sizing: border-box;
+        }
+        .grid-item:first-child input {
+            background-color: lightblue; /* Set the top left cell to grey */
+            font-size: xx-large;
+            font-weight: bold;
+            color: brown;
+        }
+
+        .grid-item-blocked {
+            background-color: gray; /* Set the top left cell to grey */
+        }
+
+        .grid-item-blank {
+            background-color: yellow; /* Set the top left cell to grey */
+        }
+
+        .grid-item-wrong {
+            background-color: red; /* Set the top left cell to grey */
+        }
+
+
+        /* Styles the flex-container to be a square */
+        #dvGrid {
+            width: 300px; /* Set the width of the square */
+            height: 300px; /* Set the height to match the width, making it a square */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Styles for the main container */
+        #dvMain {
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stacks children vertically */
+            align-items: center; /* Aligns children in the center horizontally */
+        }
+
+        /* Container for buttons to align them horizontally */
+        #buttonContainer {
+            display: flex; /* Enables flexbox */
+            justify-content: center; /* Centers buttons horizontally */
+            margin-top: 10px; /* Adds some space between the grid and the buttons */
+        }
+
+        /* Enhanced styles for the buttons */
+        #dvMain button {
+            padding: 10px 20px; /* Adds padding inside the buttons for a larger clickable area */
+            margin: 0 5px; /* Adds some space around the buttons */
+            border: none; /* Removes the default border */
+            border-radius: 5px; /* Adds rounded corners */
+            background-color: #007BFF; /* Sets a primary color background */
+            color: #FFFFFF; /* Sets the text color to white */
+            font-size: 16px; /* Increases the font size for better readability */
+            cursor: pointer; /* Changes the mouse cursor to a pointer on hover */
+            transition: background-color 0.3s; /* Smoothly transitions the background color when hovered */
+        }
+
+        #dvMain button:hover {
+            background-color: #0056b3; /* Darkens the button background on hover for a subtle effect */
+        }
+
+        #dvMain button:active {
+            background-color: #004099; /* Further darkens the button background when clicked */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="dvMain">
+        <div id="dvGrid" class="flex-container"></div>
+        <div id="buttonContainer">
+            <button onclick="doNewPuzzle()">New</button>
+            <button onclick="doResetwPuzzle()">Reset</button>
+            <button onclick="doCheckPuzzle()">Check</button>             
+        </div>      
+    </div>
+
+</body>
+<script>
+
+const cell_status = {
+	top_left: 0,
+	blank: 1,
+	locked: 2,
+	wrong: 3
+}
+class JLpuzzle {
+    constructor(nr , nc,dvGrid,puzzleData ) {
+        if(puzzleData && puzzleData.NR){
+            this.NR = puzzleData.NR;
+            this.NC = puzzleData.NC;
+            this.dvGrid=dvGrid;
+            this.arr = puzzleData.arr;
+            this.cellStatusArr = puzzleData.cellStatusArr;
+            this.random_values =puzzleData.random_values;
+            this.summed_values =puzzleData.summed_values;
+            this.solvedGrid=puzzleData.solvedGrid;  
+        } else{
+            this.NR = nr;
+            this.NC = nc;
+            this.dvGrid=dvGrid;
+            this.arr = Array(this.NR).fill().map(() => Array(this.NC).fill(0));
+            this.cellStatusArr = Array(this.NR).fill().map(() => Array(this.NC).fill(cell_status.locked));
+            this.random_values =[];
+            this.summed_values =[];
+            this.solvedGrid=[];            
+        }
+        this.cellStatusArr[0][0]=cell_status.top_left;
+
+    }
+
+    fillGrid() {
+        for (let r = 1; r < this.arr.length; r++) {
+            for (let c = 1; c < this.arr[r].length; c++) {
+                let rndpickTwo = Math.floor(Math.random() * 2);
+                let rndpickSix = Math.floor(Math.random() * 6);
+                // 1. A != 0 && B == 0 && C != 0
+                if (this.arr[0][c] != 0 && this.arr[r][0] == 0 && this.arr[r][c] != 0) {
+                    this.arr[r][0] = this.arr[0][c] + this.arr[r][c];
+                    this.summed_values.push({r:r,c:0})
+                }
+
+                // 2. A != 0 && B != 0 && C == 0
+                if (this.arr[0][c] != 0 && this.arr[r][0] != 0 && this.arr[r][c] == 0) {
+                    this.arr[r][c] = this.arr[0][c] + this.arr[r][0]
+                    this.summed_values.push({r:r,c:c})
+                }
+
+                // 3. A == 0 && B != 0 && C != 0
+                if (this.arr[0][c] == 0 && this.arr[r][0] != 0 && this.arr[r][c] != 0) {
+                    this.arr[0][c]= this.arr[r][0] + this.arr[r][c]
+                    this.summed_values.push({r:0,c:c})
+                }
+
+                // 4. A == 0 && B == 0 && C != 0
+                if (this.arr[0][c] == 0 && this.arr[r][0] == 0 && this.arr[r][c] != 0) {
+                    if(rndpickTwo==0){
+                        this.arr[r][0] =  this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:0})
+                        this.arr[0][c] = this.arr[r][0] + this.arr[r][c]
+                        this.summed_values.push({r:0,c:c})
+                    }
+                    
+                    if(rndpickTwo==1){
+                        this.arr[0][c] = this.getRandomInteger(4,50)
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][0] = this.arr[0][c] + this.arr[r][c]
+                        this.summed_values.push({r:r,c:0})
+                    }
+                }
+
+                // 5. A == 0 && B != 0 && C == 0
+                if (this.arr[0][c] == 0 && this.arr[r][0] != 0 && this.arr[r][c] == 0) {
+                    if(rndpickTwo==0){
+                        this.arr[r][c] =  this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:c})
+                        this.arr[0][c] = this.arr[r][0] + this.arr[r][c]
+                        this.summed_values.push({r:0,c:c})
+                    }
+                    
+                    if(rndpickTwo==1){
+                        this.arr[0][c] = this.getRandomInteger(4,50)
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][c] = this.arr[0][c] + this.arr[r][0]
+                        this.summed_values.push({r:r,c:c})
+                    }
+                }
+
+                // 6. A != 0 && B == 0 && C == 0
+                if (this.arr[0][c] != 0 && this.arr[r][0] == 0 && this.arr[r][c] == 0) {
+                    if(rndpickTwo==0){
+                        this.arr[r][c] =  this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:c})
+                        this.arr[r][0] = this.arr[0][c] + this.arr[r][c]
+                        this.summed_values.push({r:r,c:0})
+                    }
+                    
+                    if(rndpickTwo==1){
+                        this.arr[r][0] = this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:0})
+                        this.arr[r][c] = this.arr[0][c] + this.arr[r][0]
+                        this.summed_values.push({r:r,c:c})
+                    }
+                }
+
+                // 7. A == 0 && B == 0 && C == 0
+                if (this.arr[0][c] == 0 && this.arr[r][0] == 0 && this.arr[r][c] == 0) {
+                    if(rndpickSix==0){
+                        this.arr[0][c]=this.getRandomInteger(4,50) 
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][0]=this.getRandomInteger(4,50)  
+                        this.random_values.push({r:r,c:0})
+                        this.arr[r][c]=this.arr[0][c] +this.arr[r][0]
+                        this.summed_values.push({r:r,c:c})
+                    }
+                    if(rndpickSix==1){
+                        this.arr[0][c]=this.getRandomInteger(4,50) 
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][c]=this.getRandomInteger(4,50)	
+                        this.random_values.push({r:r,c:c})	
+                        this.arr[r][0]=this.arr[0][c] + this.arr[r][c]  
+                        this.summed_values.push({r:r,c:0})
+                    }
+                    if(rndpickSix==2){
+                        this.arr[0][c]=this.getRandomInteger(4,50) 
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][0]=this.getRandomInteger(4,50)  
+                        this.random_values.push({r:r,c:0})
+                        this.arr[r][c]= this.arr[0][c] + this.arr[r][0]
+                        this.summed_values.push({r:r,c:c})
+                    }
+                    if(rndpickSix==3){
+                        this.arr[0][c]=this.getRandomInteger(4,50) 
+                        this.random_values.push({r:0,c:c})
+                        this.arr[r][c]=this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:c})
+                        this.arr[r][0]= this.arr[0][c] + this.arr[r][c]  
+                        this.summed_values.push({r:r,c:0})		
+                    }
+                    if(rndpickSix==4){
+                        this.arr[r][0]=this.getRandomInteger(4,50)  
+                        this.random_values.push({r:r,c:0})
+                        this.arr[r][c]=this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:c})
+                        this.arr[0][c]= this.arr[r][0] + this.arr[r][c] 
+                        this.summed_values.push({r:0,c:c})		
+                    }
+                    if(rndpickSix==5){
+                        this.arr[r][0]=this.getRandomInteger(4,50)  
+                        this.random_values.push({r:r,c:0})
+                        this.arr[r][c]=this.getRandomInteger(4,50)
+                        this.random_values.push({r:r,c:c})
+                        this.arr[0][c]=this.arr[r][0] + this.arr[r][c] 
+                        this.summed_values.push({r:0,c:c})		
+                    }		
+                }
+             
+                }
+        }
+        
+    }
+
+    checkAndClear() {
+        let x= this.arr
+        let y=this.cellStatusArr 
+        this.summed_values.forEach(function(itm){
+            x[itm.r][itm.c]=0;
+            y[itm.r][itm.c]=cell_status.blank;
+        })
+    }
+
+    containsZero() {
+        for (let i = 0; i < this.arr.length; i++) {
+            for (let j = 0; j < this.arr[i].length; j++) {
+                if (this.arr[i][j] === 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    getRandomInteger(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    getCellStatus(st_vl){
+        switch(st_vl){
+            case cell_status.top_left: return "grid-item-blank"; break;
+            case cell_status.blank: return "grid-item-blank"; break;
+            case cell_status.locked: return "grid-item-locked";break; 
+            case cell_status.wrong: return "grid-item-wrong";break;             
+            default:return ""
+        }
+    }
+
+    displayGrid() {
+        this.arr[0][0]="-1";
+        let nr=this.NR;
+        let ars=this.solvedGrid;
+        let st_ars=this.cellStatusArr;
+        let f=this.getCellStatus
+        let dvhtml=this.arr.map(
+            function(rw,rw_idx){
+                return rw.map(function(cl,cl_idx){
+                        return `<div class="grid-item" style="background-color: gray;flex: 0 0 calc(50% * 1/(${nr}/2) - 2px);">
+                                   <input name="arrCell"
+                                   type=${cl==-1? "text":"number"}
+                                   row=${rw_idx}
+                                   col=${cl_idx}
+                                   class="${f(st_ars[rw_idx][cl_idx])}"
+                                   ${f(st_ars[rw_idx][cl_idx])=="grid-item-locked" ?"disabled":""}
+                                   ${cl==-1 ? "disabled":""}
+                                   value="${cl==0 ? "": (cl==-1 ? "+":cl)}">
+                                </div>`}
+                    ).join("")}
+            ).join("")
+        this.dvGrid.innerHTML=dvhtml;   
+
+        let currentArr = this.arr;
+        let currentArrStatus = this.cellStatusArr;
+        let solvedArr=this.solvedGrid;
+        document.getElementsByName("arrCell").forEach(function(itm){
+            itm.addEventListener('change', function(e){
+                let sol_val=Number(solvedArr[e.target.getAttribute("row")][e.target.getAttribute("col")]);
+                let new_val=Number(e.target.value);
+                currentArr[e.target.getAttribute("row")][e.target.getAttribute("col")]=new_val;
+                if(sol_val == new_val){   
+                    currentArrStatus[e.target.getAttribute("row")][e.target.getAttribute("col")]=cell_status.blank;                  
+                }else{
+                    currentArrStatus[e.target.getAttribute("row")][e.target.getAttribute("col")]=cell_status.wrong;
+                }
+                localStorage.setItem("JLpuzzle", JSON.stringify(this)); 
+            });            
+        })
+
+
+     }
+
+
+    // Initialize and solve the puzzle
+    initPuzzle() {
+        this.fillGrid(); // Fill the grid with initial values
+        this.solvedGrid=JSON.parse(JSON.stringify(Array.from(this.arr))); 
+        this.checkAndClear(); // Apply rules and clear certain values
+    }
+}
+
+
+var puzzle = [];
+var puzzleData=retrievePuzzle();
+if (puzzleData){
+    puzzle = new JLpuzzle(5,5,document.getElementById("dvGrid"),puzzleData);
+    puzzle.displayGrid(); 
+}else{
+    doNewPuzzle();
+}
+
+function doNewPuzzle(){
+    puzzleData=[];
+    puzzle = new JLpuzzle(5,5,document.getElementById("dvGrid"),null);
+    puzzle.initPuzzle();
+    puzzle.displayGrid();   
+    storePuzzle(); 
+}
+
+function doCheckPuzzle(){
+    puzzle.displayGrid(); 
+}
+
+function storePuzzle(){
+    localStorage.setItem("JLpuzzle", JSON.stringify(puzzle));
+}
+
+function retrievePuzzle(){
+    return JSON.parse(localStorage.getItem("JLpuzzle"));
+}
+
+function doResetwPuzzle(){
+    puzzle.initPuzzle();
+    puzzle.displayGrid();   
+    storePuzzle();     
+}
+</script>
+</html>
