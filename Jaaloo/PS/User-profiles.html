@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Profiles to Users</title>
+    <link rel="stylesheet" href="common.css">
+    <script src="database.js"></script>
+    <script src="common.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .user-container {
+            margin-bottom: 20px;
+        }
+        .user-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .profile-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .profile-item {
+            margin-bottom: 5px;
+        }
+        .username-select {
+            margin-bottom: 20px;
+            width: 200px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="username-display" id="username-display"></div>
+    <h1>Assign Profiles to Users</h1>
+    <div>
+        <select id="username-select" title="username-select"  class="username-select" onchange="loadUserProfiles(this.value)">
+            <option value="">Select User</option>
+        </select>
+    </div>
+    <div id="profiles-container"></div>
+    <button onclick="saveUserProfiles()">Save Settings</button>
+
+    <script>
+        refreshDB();
+        displayActiveUser();
+
+        const usernameSelect = document.getElementById('username-select');
+        const profilesContainer = document.getElementById('profiles-container');
+
+        database.users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.username;
+            option.textContent = user.fullname;
+            usernameSelect.appendChild(option);
+        });
+
+        function loadUserProfiles(username) {
+            profilesContainer.innerHTML = '';
+
+            if (!username) return;
+
+            const userItem = document.createElement('div');
+            userItem.classList.add('user-container');
+            userItem.innerHTML = `<div class="user-title">${username}</div>`;
+            
+            const profileList = document.createElement('ul');
+            profileList.classList.add('profile-list');
+
+            database.roles.forEach(role => {
+                const profileItem = document.createElement('li');
+                profileItem.classList.add('profile-item');
+                const isChecked = database.userroles.some(ur => ur.username === username && ur.roleID === role.roleID);
+                profileItem.innerHTML = `
+                    <label>
+                        <input type="checkbox" onclick="checboxClickes()" data-username="${username}" data-role-id="${role.roleID}" ${isChecked ? 'checked' : ''}>
+                        ${role.roleTitle}
+                    </label>
+                `;
+                profileList.appendChild(profileItem);
+            });
+
+            userItem.appendChild(profileList);
+            profilesContainer.appendChild(userItem);
+        }
+
+        function saveUserProfiles() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            database.userroles = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    database.userroles.push({
+                        username: checkbox.getAttribute('data-username'),
+                        roleID: checkbox.getAttribute('data-role-id')
+                    });
+                }
+            });
+
+            console.log('Updated User Roles:', database.userroles);
+            alert('Settings saved successfully!');
+        }
+
+        function checboxClickes(){
+            updateDB();
+        }
+    </script>
+</body>
+</html>
