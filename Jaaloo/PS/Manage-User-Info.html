@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="common.css">
+    <script src="database.js"></script>
+    <script src="common.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .user-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .user-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .user-card h2 {
+            margin-top: 0;
+        }
+        .user-card .input-group {
+            margin-bottom: 10px;
+        }
+        .user-card label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .user-card input, .user-card select {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .user-card button {
+            display: block;
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .user-card button:hover {
+            background-color: #0056b3;
+        }
+        .user-card .link-button {
+            display: block;
+            margin-bottom: 10px;
+            color: #007BFF;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .user-card .link-button:hover {
+            text-decoration: underline;
+        }
+        .user-card .edit-icon, .user-card .delete-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .user-card .edit-icon {
+            right: 40px;
+        }
+        .collapsed .input-group,
+        .collapsed button,
+        .collapsed .edit-icon {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="username-display" id="username-display"></div>
+    <button id="add-user-button">Add User</button>
+    <div class="user-container" id="user-container"></div>
+
+    <script>
+
+        refreshDB();
+        displayActiveUser();
+
+        const userContainer = document.getElementById('user-container');
+        const addUserButton = document.getElementById('add-user-button');
+        let isAddingNewCard = false;
+
+        function createUserCard(user) {
+            const card = document.createElement('div');
+            card.classList.add('user-card', 'collapsed');
+            card.innerHTML = `
+                <h2>${user.fullname}</h2>
+                <span class="delete-icon" onclick="deleteUserCard(this)">❌</span>
+                <span class="edit-icon" onclick="toggleEditMode(this, false)">✏️</span>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" value="${user.username}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" value="${user.password}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" value="${user.fullname}" oninput="updateCardTitle(this)" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" value="${user.email}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Phone</label>
+                    <input type="text" value="${user.phone}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Date of Birth</label>
+                    <input type="date" value="${user.dob}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Occupation</label>
+                    <input type="text" value="${user.occupation}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Bank</label>
+                    <input type="text" value="${user.bank}" disabled>
+                </div>
+                <div class="input-group">
+                    <label>Preferred Currency</label>
+                    <select disabled>
+                        <option value="USD" ${user.currency === 'USD' ? 'selected' : ''}>USD</option>
+                        <option value="EUR" ${user.currency === 'EUR' ? 'selected' : ''}>EUR</option>
+                        <option value="GBP" ${user.currency === 'GBP' ? 'selected' : ''}>GBP</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Role</label>
+                    <select disabled>
+                        <option value="Investor" ${user.role === 'Investor' ? 'selected' : ''}>Investor</option>
+                        <option value="Project Manager" ${user.role === 'Project Manager' ? 'selected' : ''}>Project Manager</option>
+                        <option value="Freelancer" ${user.role === 'Freelancer' ? 'selected' : ''}>Freelancer</option>
+                        <option value="Superuser" ${user.role === 'Superuser' ? 'selected' : ''}>Superuser</option>
+                    </select>
+                </div>
+                <button style="display: none;" onclick="updateUserCard(this)">Update</button>
+                <a class="link-button" href="javascript:void(0)" onclick="toggleCardSize(this)">Show more</a>
+            `;
+            userContainer.insertBefore(card, userContainer.firstChild);
+        }
+
+        function updateCardTitle(input) {
+            const card = input.closest('.user-card');
+            const title = card.querySelector('h2');
+            title.innerText = input.value;
+        }
+
+        function toggleCardSize(anchor) {
+            const card = anchor.closest('.user-card');
+            const isExpanded = card.classList.contains('collapsed');
+            card.classList.toggle('collapsed', !isExpanded);
+            anchor.innerText = isExpanded ? 'Show less' : 'Show more';
+        }
+
+        function toggleEditMode(icon, revert) {
+            const card = icon.closest('.user-card');
+            card.querySelectorAll('input, select').forEach(input => {
+                input.disabled = revert ? true : !input.disabled;
+            });
+            card.querySelector('.edit-icon').style.display = revert ? 'none' : 'block';
+            card.querySelector('button').style.display = revert ? 'none' : 'block';
+        }
+
+        function updateUserCard(button) {
+            const card = button.closest('.user-card');
+            const inputs = card.querySelectorAll('input, select');
+            const username = inputs[0].value;
+
+            const userIndex = database.users.findIndex(user => user.username === username);
+            if (userIndex !== -1) {
+                database.users[userIndex] = {
+                    username: inputs[0].value,
+                    password: inputs[1].value,
+                    fullname: inputs[2].value,
+                    email: inputs[3].value,
+                    phone: inputs[4].value,
+                    dob: inputs[5].value,
+                    occupation: inputs[6].value,
+                    bank: inputs[7].value,
+                    currency: inputs[8].value,
+                    role: inputs[9].value
+                };
+                updateDB();
+                alert('User updated successfully!');
+            }
+
+            toggleEditMode(button, true);
+            toggleCardSize(card.querySelector('.link-button'));
+        }
+
+        function deleteUserCard(icon) {
+            const card = icon.closest('.user-card');
+            const username = card.querySelector('input').value;
+
+            const userIndex = database.users.findIndex(user => user.username === username);
+            if (userIndex !== -1) {
+                database.users.splice(userIndex, 1);
+                updateDB();
+            }
+
+            card.remove();
+        }
+
+        function addUserCard() {
+            if (isAddingNewCard) {
+                alert('Finish editing the current new card before adding another.');
+                return;
+            }
+
+            const newUser = {
+                username: '',
+                password: '',
+                fullname: '',
+                email: '',
+                phone: '',
+                dob: '',
+                occupation: '',
+                bank: '',
+                currency: 'USD',
+                role: 'Investor'
+            };
+            database.users.unshift(newUser);
+            createUserCard(newUser);
+            isAddingNewCard = true;
+
+            const newCard = userContainer.firstChild;
+            toggleEditMode(newCard.querySelector('.edit-icon'), false);
+            toggleCardSize(newCard.querySelector('.link-button'));
+        }
+
+        addUserButton.addEventListener('click', addUserCard);
+
+        database.users.forEach(createUserCard);
+    </script>
+</body>
+</html>
