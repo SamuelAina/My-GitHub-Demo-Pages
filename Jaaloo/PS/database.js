@@ -212,7 +212,7 @@ originaldatabase=
   {
     "featureID": "F22",
     "moduleID": "M9",
-    "featureTitle": "Affiliate Marketing: Manage affiliate programs, track performance, and integrate commissions into the profit-sharing model.",
+    "featureTitle": "Affiliate Marketing",
     "sortPosition": 2,
     "href": "under-development.html"
   },
