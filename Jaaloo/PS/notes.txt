@@ -1,0 +1,166 @@
+Given the following database JSON object:
+database=
+  {"modules" : [
+    {
+      "moduleID": "M1",
+      "moduleTitle": "User Registration and Profile Management",
+      "sortPosition": 1
+    },
+    {
+      "moduleID": "M2",
+      "moduleTitle": "Investment and Contribution Tracking",
+      "sortPosition": 2
+    },
+    {
+      "moduleID": "M3",
+      "moduleTitle": "Workstream Management and Incentivization",
+      "sortPosition": 3
+    },
+    {
+      "moduleID": "M4",
+      "moduleTitle": "Profit Sharing Calculation",
+      "sortPosition": 4
+    },
+    {
+      "moduleID": "M5",
+      "moduleTitle": "Financial Management",
+      "sortPosition": 5
+    },
+    {
+      "moduleID": "M6",
+      "moduleTitle": "Communication, Collaboration, and Marketing",
+      "sortPosition": 6
+    },
+    {
+      "moduleID": "M7",
+      "moduleTitle": "Educational Resources and Support",
+      "sortPosition": 7
+    },
+    {
+      "moduleID": "M8",
+      "moduleTitle": "Subscription and Packages Management",
+      "sortPosition": 8
+    },
+    {
+      "moduleID": "M9",
+      "moduleTitle": "Legal, Tax, and Affiliate Management",
+      "sortPosition": 9
+    },
+    {
+      "moduleID": "M10",
+      "moduleTitle": "Analytics, R&D, and Document Management",
+      "sortPosition": 10
+    }
+  ] ,
+
+"features":[
+    {
+      "featureID": "F1",
+      "moduleID": "M1",
+      "featureTitle": "Manage User Info",
+      "sortPosition": 1,
+      "href": "User Info.html"
+    },
+    {
+      "featureID": "F2",        
+      "moduleID": "M1",
+      "featureTitle": "Manage User Permissions",
+      "sortPosition": 2,
+      "href": "Roles and Permissions Management.html"
+    },
+    {
+      "featureID": "F3",        
+      "moduleID": "M1",
+      "featureTitle": "Log out",
+      "sortPosition": 3,
+      "href": "User login.html"
+    },
+    {
+      "featureID": "F4",        
+      "moduleID": "M1",
+      "featureTitle": "Account Creation",
+      "sortPosition": 4,
+      "href": "#"
+    },
+    {
+      "featureID": "F5",        
+      "moduleID": "M1",
+      "featureTitle": "Reset Password",
+      "sortPosition": 5,
+      "href": "Reset Password Page.html"
+    }
+  ] ,
+
+
+    "roles" : [{"roleID":"R1", roleTitle:"Investor"},{"roleID":"R2", roleTitle:"Programmer"},{"roleID":"R3", roleTitle:"Frelance"},{"roleID":"R4", roleTitle:"Superuser"}]
+,
+
+
+    "rolefeatures" : [{"roleID":"R4", "featureID": "F1"},{"roleID":"R4", "featureID": "F2"},{"roleID":"R4", "featureID": "F13"},{"roleID":"R4", "featureID": "F4", "featureID": "F5"}]
+,
+
+
+    "users" : [
+            {"username":"xx@xx.com", "password":"xxx", "fullname":"Joe Bloggs","email":"xx@xx.com","phone":"111","dob":"1970-01-01","occupation":"Teacher","bank":"aaaa","currency":"USD","role":"investor"},
+            {"username":"zz@zz.com", "password":"zzz", "fullname":"Fred Flop","email":"zz@zz.com","phone":"222","dob":"1970-02-02","occupation":"Student","bank":"bbbb","currency":"GBP","role":"investor"},
+            {"username":"yy@yy.com", "password":"yyy", "fullname":"Lucy Canon","email":"yy@yy.com","phone":"333","dob":"1970-03-03","occupation":"Student","bank":"cccc","currency":"USD","role":"investor"},
+            {"username":"aa@aa.com", "password":"aaa", "fullname":"Handy Mann","email":"aa@aa.com","phone":"444","dob":"1960-04-04","occupation":"Teacher","bank":"dddd","currency":"USD","role":"investor"},
+            {"username":"bb@bb.com", "password":"bbb", "fullname":"Sue Ben","email":"bb@bb.com","phone":"555","dob":"1960-05-05","occupation":"Programmer","bank":"eeee","currency":"GBP","role":"investor"}
+        ]    
+ ,
+
+    "userroles":[
+        {"username":"xx@xx.com", "roleID":"R4"}
+        ,{"username":"yy@yy.com", "roleID":"R4"}  
+        ]
+}
+
+Give me HTML for a login page using the username and password in the database object provided. Add a javascript function that validates the user.
+
+Give me HTML for a login Reset Password page. Add a javascript function that that updates the username and password in the database object provided. 
+
+Give me HTML page that displays a card for each of the user in the database. 
+
+
+Give me HTML that displays a an editable card for each of the user items in the JSON database. Each form should have an edit icon which will enable editing. Each card should also have an update button. There  should be a show less/show more toggle in each card which should make it smaller/bigger.
+
+Let the update button appear only when the card is expanded.
+
+Style the input objects so that they look nicely laid out and presentable
+
+Also make the edit icon visible only when the card is expanded
+
+let the show more/show less button be an anchor object with link of a button
+
+Let the input for role be a dropdown with the following options: Investor,Project Manager,Freelancer and Superuser
+
+Let the input for Preferred Currency be a dropdown with the following options: USD, EUR and GBP
+
+When the update button is clicked let the original JSON data be updated from the inputs in the card
+
+let the update button only be visible when the card is editable
+
+Add a delete icon to the top right of each card when it is clicked the card should be deleted  as well as its value in the original data
+
+when the card is collapsed it should revert to not editable
+
+Add a button "Add user" at  the top of the page to facilitate adding new user card which should also update the original data.
+
+When the new card is created let it be at the top. Also if a new card has not yet been updated, prevent new card from being  created
+
+Give me HTML for a features page that uses the database object provided. The fetures should be displayed using li/ul tags presenting modules at the top level and their respective features as the next level. the title of the modules should appear like "Module 1 - User Registration and Profile management". Tle Features should be enclosed in <a> tag.
+
+
+Make the top level LI tags collapsible.
+
+
+Give me HTML that allows a user to set the active features for each role based on the provided JSON database
+
+
+Give me HTML for user to be able to create an account by providing just username, password and password confirmation based on the JSON database provided
+
+
+For the Login HTML, when the user successfully logs in, set the "loggedin" property of the user to true
+
+
+Add a property that indicates that only one user can be the active user and implement it.

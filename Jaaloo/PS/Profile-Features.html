@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Active Features for Roles</title>
+    <link rel="stylesheet" href="common.css">
+    <script src="database.js"></script>
+    <script src="common.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .role-container {
+            margin-bottom: 20px;
+        }
+        .role-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .feature-item {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="username-display" id="username-display"></div>
+    <h1>Set Active Features for Roles</h1>
+    <div id="roles-container"></div>
+    <button onclick="saveSettings()">Save Settings</button>
+
+    <script>
+        refreshDB();
+        displayActiveUser();
+        const rolesContainer = document.getElementById('roles-container');       
+        function createRoleFeatureList(role) {
+            const roleItem = document.createElement('div');
+            roleItem.classList.add('role-container');
+            roleItem.innerHTML = `<div class="role-title">${role.roleTitle}</div>`;
+            
+            const featureList = document.createElement('ul');
+            featureList.classList.add('feature-list');
+            
+            database.features.forEach(feature => {
+                const featureItem = document.createElement('li');
+                featureItem.classList.add('feature-item');
+                const isChecked = database.rolefeatures.some(rf => rf.roleID === role.roleID && rf.featureID === feature.featureID);
+                featureItem.innerHTML = `
+                    <label>
+                        <input type="checkbox" data-role-id="${role.roleID}" data-feature-id="${feature.featureID}" ${isChecked ? 'checked' : ''}>
+                        ${feature.featureTitle}
+                    </label>
+                `;
+                featureList.appendChild(featureItem);
+            });
+
+            roleItem.appendChild(featureList);
+            rolesContainer.appendChild(roleItem);
+            updateDB();
+        }
+
+        database.roles.forEach(createRoleFeatureList);
+
+        function saveSettings() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            database.rolefeatures = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    database.rolefeatures.push({
+                        roleID: checkbox.getAttribute('data-role-id'),
+                        featureID: checkbox.getAttribute('data-feature-id')
+                    });
+                }
+            });
+            updateDB();
+            console.log('Updated Role Features:', database.rolefeatures);
+            alert('Settings saved successfully!');
+        }
+    </script>
+</body>
+</html>
