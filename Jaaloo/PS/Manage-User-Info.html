@@ -80,8 +80,7 @@
             right: 40px;
         }
         .collapsed .input-group,
-        .collapsed button,
-        .collapsed .edit-icon {
+        .collapsed button {
             display: none;
         }
     </style>
@@ -92,6 +91,30 @@
     <div class="user-container" id="user-container"></div>
 
     <script>
+        const database = {
+            "users": [
+                {"username":"xx@xx.com", "fullname":"Joe Bloggs", "email":"xx@xx.com", "phone":"111", "dob":"1970-01-01", "occupation":"Teacher", "bank":"aaaa", "currency":"USD"},
+                {"username":"zz@zz.com", "fullname":"Fred Flop", "email":"zz@zz.com", "phone":"222", "dob":"1970-02-02", "occupation":"Student", "bank":"bbbb", "currency":"GBP"},
+                {"username":"yy@yy.com", "fullname":"Lucy Canon", "email":"yy@yy.com", "phone":"333", "dob":"1970-03-03", "occupation":"Student", "bank":"cccc", "currency":"USD"},
+                {"username":"aa@aa.com", "fullname":"Handy Mann", "email":"aa@aa.com", "phone":"444", "dob":"1960-04-04", "occupation":"Teacher", "bank":"dddd", "currency":"USD"},
+                {"username":"bb@bb.com", "fullname":"Sue Ben", "email":"bb@bb.com", "phone":"555", "dob":"1960-05-05", "occupation":"Programmer", "bank":"eeee", "currency":"GBP"}
+            ]
+        };
+
+        function refreshDB() {
+            // Simulated refresh
+            console.log('Database refreshed');
+        }
+
+        function updateDB() {
+            // Simulated update
+            console.log('Database updated', database);
+        }
+
+        function displayActiveUser() {
+            // Simulated display of active user
+            document.getElementById('username-display').textContent = 'Logged in as: example@domain.com';
+        }
 
         refreshDB();
         displayActiveUser();
@@ -100,7 +123,7 @@
         const addUserButton = document.getElementById('add-user-button');
         let isAddingNewCard = false;
 
-        function createUserCard(user) {
+        function createUserCard(user, isNew = false) {
             const card = document.createElement('div');
             card.classList.add('user-card', 'collapsed');
             card.innerHTML = `
@@ -110,10 +133,6 @@
                 <div class="input-group">
                     <label>Username</label>
                     <input type="text" value="${user.username}" disabled>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" value="${user.password}" disabled>
                 </div>
                 <div class="input-group">
                     <label>Full Name</label>
@@ -147,16 +166,7 @@
                         <option value="GBP" ${user.currency === 'GBP' ? 'selected' : ''}>GBP</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Role</label>
-                    <select disabled>
-                        <option value="Investor" ${user.role === 'Investor' ? 'selected' : ''}>Investor</option>
-                        <option value="Project Manager" ${user.role === 'Project Manager' ? 'selected' : ''}>Project Manager</option>
-                        <option value="Freelancer" ${user.role === 'Freelancer' ? 'selected' : ''}>Freelancer</option>
-                        <option value="Superuser" ${user.role === 'Superuser' ? 'selected' : ''}>Superuser</option>
-                    </select>
-                </div>
-                <button style="display: none;" onclick="updateUserCard(this)">Update</button>
+                <button style="display: none;" onclick="updateUserCard(this, ${isNew})">Update</button>
                 <a class="link-button" href="javascript:void(0)" onclick="toggleCardSize(this)">Show more</a>
             `;
             userContainer.insertBefore(card, userContainer.firstChild);
@@ -172,6 +182,7 @@
             const card = anchor.closest('.user-card');
             const isExpanded = card.classList.contains('collapsed');
             card.classList.toggle('collapsed', !isExpanded);
+            card.querySelector('.edit-icon').style.display = isExpanded ? 'block' : 'none';
             anchor.innerText = isExpanded ? 'Show less' : 'Show more';
         }
 
@@ -184,7 +195,7 @@
             card.querySelector('button').style.display = revert ? 'none' : 'block';
         }
 
-        function updateUserCard(button) {
+        function updateUserCard(button, isNew) {
             const card = button.closest('.user-card');
             const inputs = card.querySelectorAll('input, select');
             const username = inputs[0].value;
@@ -193,18 +204,30 @@
             if (userIndex !== -1) {
                 database.users[userIndex] = {
                     username: inputs[0].value,
-                    password: inputs[1].value,
-                    fullname: inputs[2].value,
-                    email: inputs[3].value,
-                    phone: inputs[4].value,
-                    dob: inputs[5].value,
-                    occupation: inputs[6].value,
-                    bank: inputs[7].value,
-                    currency: inputs[8].value,
-                    role: inputs[9].value
+                    fullname: inputs[1].value,
+                    email: inputs[2].value,
+                    phone: inputs[3].value,
+                    dob: inputs[4].value,
+                    occupation: inputs[5].value,
+                    bank: inputs[6].value,
+                    currency: inputs[7].value
                 };
                 updateDB();
                 alert('User updated successfully!');
+            } else if (isNew) {
+                const newUser = {
+                    username: inputs[0].value,
+                    fullname: inputs[1].value,
+                    email: inputs[2].value,
+                    phone: inputs[3].value,
+                    dob: inputs[4].value,
+                    occupation: inputs[5].value,
+                    bank: inputs[6].value,
+                    currency: inputs[7].value
+                };
+                database.users.push(newUser);
+                updateDB();
+                alert('New user added successfully!');
             }
 
             toggleEditMode(button, true);
@@ -232,18 +255,16 @@
 
             const newUser = {
                 username: '',
-                password: '',
                 fullname: '',
                 email: '',
                 phone: '',
                 dob: '',
                 occupation: '',
                 bank: '',
-                currency: 'USD',
-                role: 'Investor'
+                currency: 'USD'
             };
             database.users.unshift(newUser);
-            createUserCard(newUser);
+            createUserCard(newUser, true);
             isAddingNewCard = true;
 
             const newCard = userContainer.firstChild;
@@ -253,7 +274,7 @@
 
         addUserButton.addEventListener('click', addUserCard);
 
-        database.users.forEach(createUserCard);
+        database.users.forEach(user => createUserCard(user));
     </script>
 </body>
 </html>
