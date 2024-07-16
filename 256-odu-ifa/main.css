@@ -103,7 +103,7 @@ td:first-child {
 svg {
     height: auto;
     display: block;
-    background-image: url("images/odu-ifa-awo-open.png");
+    background-image: url("images/odu-ifa-awo-closed.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
