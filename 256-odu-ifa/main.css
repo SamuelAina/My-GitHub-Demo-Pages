@@ -12,28 +12,41 @@
     justify-content: center;
     /*height: 100vh;*/
     text-align: center;
+
+
+    align-items: center;
 }
 
 h1, h2, h3 {
     color: #0098B6;
     font-weight: 300;
     text-transform: uppercase;
+    margin: auto;
 }
 
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 
+
+
 button {
-    padding: 10px 20px;
+    padding: 5px 5px;
     font-size: 16px;
     background-color: #0098B6;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 20px;
+    width: 120px;
+    height: 40px;    
 }
+
+
+#btnclear {
+    display:none;
+}
+/**/
 
 button:hover {
     background-color: #45a049;
@@ -49,10 +62,10 @@ button:hover {
 }
 
 .table-container, .svg-container {
-    margin: 20px;
+    margin: 5px;
     background: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 20px;
+    padding: 5px;
     border-radius: 10px;
     border: 1px solid #eee;
 }
@@ -63,7 +76,7 @@ button:hover {
 
 .table-container img {
     width: 150px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 table {
@@ -90,7 +103,7 @@ td:first-child {
 svg {
     height: auto;
     display: block;
-    background-image: url("images/odu-ifa-awo-closed.png");
+    background-image: url("images/odu-ifa-awo-open.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
