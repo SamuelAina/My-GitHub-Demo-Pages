@@ -40,7 +40,7 @@
 
         const intervalId = setInterval(() => {
             rectangles.forEach(rect => {
-                const randomColor = Math.random() > 0.5 ? 'red' :'blue' ;//'#0098B6';
+                const randomColor = Math.random() > 0.5 ? 'red' :'#0098B6';//'blue' ;//
                 rect.style.fill = randomColor;
             });
         }, 300);
@@ -69,6 +69,7 @@
     }
 
     function throwclicked(){
+        clearOpeleLabels();
         const lhsTitle2 = document.getElementById('lhsTitle2');
         lhsTitle2.style.color="red";
         lhsTitle2.innerText="Divining...Please wait...";
@@ -124,20 +125,18 @@
         ];
         */
 
-        var mySVG=document.getElementById("mySVG");
-        var node_offset_x=0; 
-        var node_offset_y=0; 
+        var mySVG=document.getElementById("mySVG"); 
         var gm = Array.from({ length: 8 }, getRandomMark);
         
-        var node1 ={x:n[0].x+node_offset_x+getRandomInteger(1, 30), y:n[0].y+node_offset_y, mark:gm[0]};
-        var node2 ={x:n[1].x+node_offset_x+getRandomInteger(1, 30), y:n[1].y+node_offset_y, mark:gm[1]};
-        var node3 ={x:n[2].x+node_offset_x+getRandomInteger(1, 30), y:n[2].y+node_offset_y, mark:gm[2]};
-        var node4 ={x:n[3].x+node_offset_x+getRandomInteger(1, 30), y:n[3].y+node_offset_y, mark:gm[3]};
+        var node1 ={x:n[0].x+getRandomInteger(1, 30), y:n[0].y, mark:gm[0]};
+        var node2 ={x:n[1].x+getRandomInteger(1, 30), y:n[1].y, mark:gm[1]};
+        var node3 ={x:n[2].x+getRandomInteger(1, 30), y:n[2].y, mark:gm[2]};
+        var node4 ={x:n[3].x+getRandomInteger(1, 30), y:n[3].y, mark:gm[3]};
 
-        var node5 ={x:n[4].x+node_offset_x+getRandomInteger(1, 30), y:n[4].y+node_offset_y, mark:gm[4]};
-        var node6 ={x:n[5].x+node_offset_x+getRandomInteger(1, 30), y:n[5].y+node_offset_y, mark:gm[5]};
-        var node7 ={x:n[6].x+node_offset_x+getRandomInteger(1, 30), y:n[6].y+node_offset_y, mark:gm[6]};
-        var node8 ={x:n[7].x+node_offset_x+getRandomInteger(1, 30), y:n[7].y+node_offset_y, mark:gm[7]};
+        var node5 ={x:n[4].x+getRandomInteger(1, 30), y:n[4].y, mark:gm[4]};
+        var node6 ={x:n[5].x+getRandomInteger(1, 30), y:n[5].y, mark:gm[5]};
+        var node7 ={x:n[6].x+getRandomInteger(1, 30), y:n[6].y, mark:gm[6]};
+        var node8 ={x:n[7].x+getRandomInteger(1, 30), y:n[7].y, mark:gm[7]};
 
         var svghtml =
         `    	
@@ -188,11 +187,11 @@
     }
 
     function placeNode(nodeLabel,nodeX,nodeY){
-        var nodeColour =nodeLabel=="I" ? "red" :"blue";// "#0098B6;"; 
+        var nodeColour =nodeLabel=="I" ? "red" :"#0098B6;";// "blue";// 
 
         return `<g transform="translate(${nodeX}, ${nodeY})">
                 <g transform="rotate(45)">
-                    <rect  class="color-rect" width="${node_size}" height="${node_size}" style="fill: ${nodeColour};"></rect>
+                    <rect  class="color-rect" width="${node_size}" height="${node_size}" style="fill: ${nodeColour};"  stroke="black" stroke-width="2"></rect>
                 </g>
                 ${placeNodetext(nodeLabel)}
             </g>`
@@ -244,3 +243,10 @@
     
     return number.toString().padStart(3, '0');
 	}
+
+    function clearOpeleLabels(){
+        const rectangles = document.getElementsByTagName("text");
+        Array.from(rectangles).forEach(rect => {
+            rect.innerHTML=".";
+        });
+    }
