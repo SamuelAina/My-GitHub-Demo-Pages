@@ -2,123 +2,184 @@
 <html lang="en">
 
 <head>
-    <title>256 ODU IFA - ỌPẸLẸ</title>
+<title>256 ODU IFA - ỌPẸLẸ</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
-    <script src="od.js"></script>
-    <script src="main.js"></script>
-
+<meta name="viewport" content="height=device-height,width=device-width, initial-scale=1.0">    
+<link rel="stylesheet" href="main.css">
+<script src="od.js"></script>    
+<script src="main.js"></script>
 </head>
-
 <body>
-    <h1>256 Odu Ifa - Ọpẹlẹ</h1>
+    
+     
     <div class="container">
-        <div class="svg-container">
-            <button onclick="throwclicked()">Throw</button>
-            <svg id="mySVG" width="400" height="350">
-                <!-- Nodes -->
-                <g transform="translate(230, 50)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(315, 50)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(158, 150)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(301, 150)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(225, 250)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(372, 250)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(157, 350)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
-                <g transform="translate(381, 350)">
-                    <g transform="rotate(45)">
-                        <rect class="color-rect" width="50" height="50"></rect>
-                    </g>
-                    <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
-                </g>
+    <h1>256 Odu Ifa - Ọpẹlẹ</h1>    
+    <div class="svg-container">
+        <button onclick="throwclicked()">Throw</button>
+        <div id="dvSVG">
 
-                <!-- connections -->
-                <line x1="250" y1="20" x2="230" y2="50" class="line"></line>
-                <line x1="250" y1="20" x2="315" y2="50" class="line"></line>
-                <line x1="230" y1="120" x2="158" y2="150" class="line"></line>
-                <line x1="158" y1="220" x2="225" y2="250" class="line"></line>
-                <line x1="225" y1="320" x2="157" y2="350" class="line"></line>
-                <line x1="315" y1="120" x2="301" y2="150" class="line"></line>
-                <line x1="301" y1="220" x2="372" y2="250" class="line"></line>
-                <line x1="372" y1="320" x2="381" y2="350" class="line"></line>
-            </svg>
-            <h3 id="lhsTitle1"></h3>
-            <h4 id="lhsTitle2"></h4>
         </div>
-        <div class="table-container">
-            <div id="dvCard" class="card">
-                <div class="card-front">
-                    <img id="front_card" src="images/000-ODU-EYIN.jpg" alt="card-front">
-                </div>
-                <div class="card-back">
-                    <img id="back_card" src="images/000-ODU-EYIN.jpg" alt="card-back">
-                </div>
-            </div>
-            <table class="info-table">
-                <tbody>
-                    <tr>
-                        <td>Odu ifa:</td>
-                        <td><span id="odl"><strong></strong></span></td>
-                    </tr>
-                    <tr>
-                        <td>Insight:</td>
-                        <td><span id="odt"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Index:</td>
-                        <td><span id="odi"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Binary:</td>
-                        <td><span id="bin"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Hexadecimal:</td>
-                        <td><span id="hex"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Decimal:</td>
-                        <td><span id="dec"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <h3 id="lhsTitle1"></h3>
+        <h4 id="lhsTitle2"></h4>
     </div>
-</body>
+    <div class="table-container">  
 
+        <div id="dvCard" class="card">
+            <div class="card-front">
+                <img id="front_card" src="images/000-ODU-EYIN.jpg" alt="card-front">
+            </div>
+            <div class="card-back">
+                <img id="back_card" src="images/000-ODU-EYIN.jpg" alt="card-back">
+            </div>
+        </div>
+        <table class="info-table">
+            <tbody>
+                <tr>
+                    <td>Odu ifa:</td><td><span id="odl"><strong></strong></span></td>
+                </tr>
+                <tr>
+                    <td>Insight:</td><td><span id="odt"></span></td>
+                </tr>
+                <tr>
+                    <td>Index:</td><td><span id="odi"></span></td>
+                </tr> 
+            <tr>
+                <td>Binary:</td><td><span id="bin"></span></td>
+            </tr>
+             
+            <tr>
+                <td>Hexadecimal:</td><td><span id="hex"></span></td>
+            </tr>
+            <tr>
+                <td>Decimal:</td><td><span id="dec"></span></td>
+            </tr>              
+                                             
+        </tbody></table>
+    </div>     
+   
+</div> 
+</body>
+<script>
+    dvSVG=document.getElementById("dvSVG");
+    svg_width=300;
+    svg_height=300;
+    node_size=30;
+    apex_x=275;
+    apex_y=100;
+    nodetext_y=25;
+
+        /*
+        currently in the form:
+        1(0)  2(1)
+        3(2)  4(3)
+        5(4)  6(5)
+        7(6)  8(7)  
+        Needs to be rearranged     
+        */
+    n = [
+        {x:250,y:110}  ,{x:300,y:110}
+       ,{x:200,y:170}  ,{x:300,y:170}
+       ,{x:230,y:230}  ,{x:300,y:230}  
+       ,{x:180,y:290}  ,{x:280,y:290}                  
+    ];
+
+    L13=cl(n[0],n[2]);
+
+    L35=cl(n[2],n[4]);
+    L57=cl(n[4],n[6]);
+
+    L24=cl(n[1],n[3]);
+    L46=cl(n[3],n[5]);
+    L68=cl(n[5],n[7]);
+
+    console.log(L68);
+
+
+    dvSVG.innerHTML=`<svg id="mySVG" width="${svg_width}" height="${svg_height}">    	
+                <!-- Nodes -->
+                <g transform="translate(${n[0].x}, ${n[0].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[1].x}, ${n[1].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[2].x}, ${n[2].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[3].x}, ${n[3].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[4].x}, ${n[4].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[5].x}, ${n[5].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[6].x}, ${n[6].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}"></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+                <g transform="translate(${n[7].x}, ${n[7].y})">
+                <g transform="rotate(45)">
+                    <rect class="color-rect" width="${node_size}" height="${node_size}"></rect>
+                </g>
+                <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
+            </g>
+ 
+                <!-- connections -->
+                <!-- origin to apex of node 1 -->
+                <line x1="${apex_x}" y1="${apex_y}" x2="${n[0].x}" y2="${n[0].y}" class="line"></line>
+
+                <!-- origin to apex of node 2 -->
+                <line x1="${apex_x}" y1="${apex_y}" x2="${n[1].x}" y2="${n[1].y}" class="line"></line>
+
+                <!-- base of node 1 to apex of node 3 -->
+                <line x1="${L13.x1}" y1="${L13.y1}" x2="${L13.x2}" y2="${L13.y2}" class="line"></line>
+
+                <!-- base of node 3 to apex of node 5 -->
+                <line x1="${L35.x1}" y1="${L35.y1}" x2="${L35.x2}" y2="${L35.y2}" class="line"></line>
+
+                <!-- base of node 5 to apex of node 7 -->
+                <line x1="${L57.x1}" y1="${L57.y1}" x2="${L57.x2}" y2="${L57.y2}" class="line"></line>    
+                
+                <!-- base of node 2 to apex of node 4 -->
+                <line x1="${L24.x1}" y1="${L24.y1}" x2="${L24.x2}" y2="${L24.y2}" class="line"></line>    
+        
+                <!-- base of node 4 to apex of node 6 -->
+                <line x1="${L46.x1}" y1="${L46.y1}" x2="${L46.x2}" y2="${L46.y2}" class="line"></line>        
+        
+                <!-- base of node 6 to apex of node 8 -->
+                <line x1="${L68.x1}" y1="${L68.y1}" x2="${L68.x2}" y2="${L68.y2}" class="line"></line>         
+            </svg>`;
+
+
+function cl(n1,n2){
+    node_height=Math.sqrt(node_size**2 + node_size**2);
+    return { x1:n1.x
+           , y1:n1.y+node_height
+           , x2:n2.x
+           , y2:n2.y
+           };
+}
+</script>
 </html>
