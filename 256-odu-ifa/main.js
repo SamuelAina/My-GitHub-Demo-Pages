@@ -27,7 +27,8 @@
                 clearInterval(intervalId);
                 const lhsTitle2 = document.getElementById('lhsTitle2');
                 lhsTitle2.style.color="black"
-                lhsTitle2.innerText="OK";                
+                lhsTitle2.innerText="OK";      
+                
                 toggleBlur();
 				refresh2();
             }
@@ -105,7 +106,19 @@
 		
 		document.getElementById("lhsTitle1").innerText=od.odu;
 		document.getElementById("front_card").src="images/"+getFile(chr3(od.id));
-		
+
+        document.getElementById("lhsTitle2").innerText=od.translation;
+         
+      
+        const svgElement = document.getElementById('mySVG');
+        svgElement.style.backgroundImage = "url(images/odu-ifa-awo-open.png)";
+        svgElement.style.display='none';
+        svgElement.style.offsetHeigt;
+        svgElement.style.display='block';    
+        
+        const btnclear = document.getElementById("btnclear");
+        btnclear.style.display = 'block'; 
+        btnclear.style.margin = '0 auto'; 
     }
 	
     function showOpeleDice(){
@@ -250,3 +263,5 @@
             rect.innerHTML=".";
         });
     }
+
+
