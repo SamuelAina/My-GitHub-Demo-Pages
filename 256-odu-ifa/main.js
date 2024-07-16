@@ -40,7 +40,7 @@
 
         const intervalId = setInterval(() => {
             rectangles.forEach(rect => {
-                const randomColor = Math.random() > 0.5 ? 'red' : '#0098B6';
+                const randomColor = Math.random() > 0.5 ? 'red' :'blue' ;//'#0098B6';
                 rect.style.fill = randomColor;
             });
         }, 300);
@@ -108,20 +108,36 @@
     }
 	
     function showOpeleDice(){
+        /*
+        currently in the form:
+        1(0)  2(1)
+        3(2)  4(3)
+        5(4)  6(5)
+        7(6)  8(7)  
+        Needs to be rearranged     
+        
+        n = [
+            {x:250,y:110}  ,{x:300,y:110}
+           ,{x:200,y:170}  ,{x:300,y:170}
+           ,{x:230,y:230}  ,{x:300,y:230}  
+           ,{x:180,y:290}  ,{x:280,y:290}                  
+        ];
+        */
+
         var mySVG=document.getElementById("mySVG");
-        var node_offset_x=50; 
-        var node_offset_y=50; 
+        var node_offset_x=0; 
+        var node_offset_y=0; 
         var gm = Array.from({ length: 8 }, getRandomMark);
         
-        var node1 ={x:150+node_offset_x+getRandomInteger(1, 30), y:0+node_offset_y,   mark:gm[0]};
-        var node2 ={x:250+node_offset_x+getRandomInteger(1, 30), y:0+node_offset_y,   mark:gm[1]};
-        var node3 ={x:100+node_offset_x+getRandomInteger(1, 30), y:100+node_offset_y, mark:gm[2]};
-        var node4 ={x:250+node_offset_x+getRandomInteger(1, 30), y:100+node_offset_y, mark:gm[3]};
+        var node1 ={x:n[0].x+node_offset_x+getRandomInteger(1, 30), y:n[0].y+node_offset_y, mark:gm[0]};
+        var node2 ={x:n[1].x+node_offset_x+getRandomInteger(1, 30), y:n[1].y+node_offset_y, mark:gm[1]};
+        var node3 ={x:n[2].x+node_offset_x+getRandomInteger(1, 30), y:n[2].y+node_offset_y, mark:gm[2]};
+        var node4 ={x:n[3].x+node_offset_x+getRandomInteger(1, 30), y:n[3].y+node_offset_y, mark:gm[3]};
 
-        var node5 ={x:150+node_offset_x+getRandomInteger(1, 30), y:200+node_offset_y, mark:gm[4]};
-        var node6 ={x:300+node_offset_x+getRandomInteger(1, 30), y:200+node_offset_y, mark:gm[5]};
-        var node7 ={x:100+node_offset_x+getRandomInteger(1, 30), y:300+node_offset_y, mark:gm[6]};
-        var node8 ={x:325+node_offset_x+getRandomInteger(1, 30), y:300+node_offset_y, mark:gm[7]};
+        var node5 ={x:n[4].x+node_offset_x+getRandomInteger(1, 30), y:n[4].y+node_offset_y, mark:gm[4]};
+        var node6 ={x:n[5].x+node_offset_x+getRandomInteger(1, 30), y:n[5].y+node_offset_y, mark:gm[5]};
+        var node7 ={x:n[6].x+node_offset_x+getRandomInteger(1, 30), y:n[6].y+node_offset_y, mark:gm[6]};
+        var node8 ={x:n[7].x+node_offset_x+getRandomInteger(1, 30), y:n[7].y+node_offset_y, mark:gm[7]};
 
         var svghtml =
         `    	
@@ -137,10 +153,10 @@
                 
                 <!-- connections -->
                 <!-- origin to apex of node 1 -->
-                <line x1="250" y1="20" x2="${node1.x}" y2="${node1.y}" class="line"></line>
+                <line x1="${apex_x}" y1="${apex_y}" x2="${node1.x}" y2="${node1.y}" class="line"></line>
 
                 <!-- origin to apex of node 2 -->
-                <line x1="250" y1="20" x2="${node2.x}" y2="${node2.y}" class="line"></line>
+                <line x1="${apex_x}" y1="${apex_y}" x2="${node2.x}" y2="${node2.y}" class="line"></line>
 
                 <!-- base of node 1 to apex of node 3 -->
                 ${lineFromBaseNode1toApexNode2(node1, node3)}
@@ -168,22 +184,23 @@
 
 
     function placeNodetext(nodeLabel){
-        return `<text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">${nodeLabel}</text>`
+        return `<text x="0" y="${nodetext_y}" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">${nodeLabel}</text>`
     }
 
     function placeNode(nodeLabel,nodeX,nodeY){
-        var nodeColour =nodeLabel=="I" ? "red" : "#0098B6;"; 
+        var nodeColour =nodeLabel=="I" ? "red" :"blue";// "#0098B6;"; 
 
         return `<g transform="translate(${nodeX}, ${nodeY})">
                 <g transform="rotate(45)">
-                    <rect  class="color-rect" width="50" height="50" style="fill: ${nodeColour};"></rect>
+                    <rect  class="color-rect" width="${node_size}" height="${node_size}" style="fill: ${nodeColour};"></rect>
                 </g>
                 ${placeNodetext(nodeLabel)}
             </g>`
     }
 
     function lineFromBaseNode1toApexNode2(node1, node2) {
-        return `<line x1="${node1.x}" y1="${node1.y+70}" x2="${node2.x}" y2="${node2.y}" class="line"></line>`;
+        node_height=Math.sqrt(node_size**2 + node_size**2);
+        return `<line x1="${node1.x}" y1="${node1.y+node_height}" x2="${node2.x}" y2="${node2.y}" class="line"></line>`;
     }
 
     function getRandomInteger(min, max) {
