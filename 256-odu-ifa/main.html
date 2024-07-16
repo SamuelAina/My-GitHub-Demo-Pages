@@ -22,6 +22,7 @@
         </div>
         <h3 id="lhsTitle1"></h3>
         <h4 id="lhsTitle2"></h4>
+        <button id="btnclear" onclick="clearClicked()">Clear</button>
     </div>
     <div class="table-container">  
 
@@ -56,11 +57,14 @@
             </tr>              
                                              
         </tbody></table>
+
     </div>     
    
 </div> 
 </body>
 <script>
+    
+
     var dvSVG=document.getElementById("dvSVG");
     var svg_width=320;
     var svg_height=320;
@@ -187,6 +191,10 @@ function cl(n1,n2){
            , x2:n2.x
            , y2:n2.y
            };
+}
+
+function clearClicked(){
+    location.reload(true);
 }
 </script>
 </html>
