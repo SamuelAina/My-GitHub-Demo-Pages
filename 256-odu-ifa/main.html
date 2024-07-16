@@ -13,8 +13,9 @@
     
      
     <div class="container">
-    <h1>256 Odu Ifa - Ọpẹlẹ</h1>    
+       
     <div class="svg-container">
+        <h1>256 Odu Ifa - Ọpẹlẹ</h1> 
         <button onclick="throwclicked()">Throw</button>
         <div id="dvSVG">
 
@@ -60,14 +61,17 @@
 </div> 
 </body>
 <script>
-    dvSVG=document.getElementById("dvSVG");
-    svg_width=300;
-    svg_height=300;
-    node_size=30;
-    apex_x=275;
-    apex_y=100;
-    nodetext_y=25;
+    var dvSVG=document.getElementById("dvSVG");
+    var svg_width=320;
+    var svg_height=320;
+    var node_size=30;
+    var apex_x=275;
+    var apex_y=100;
+    var node_spacing_y=50;
 
+    var nodetext_y=25;
+    var node_offset_x=-100; 
+    var node_offset_y=-50;
         /*
         currently in the form:
         1(0)  2(1)
@@ -76,11 +80,14 @@
         7(6)  8(7)  
         Needs to be rearranged     
         */
+    apex_x=275+node_offset_x;
+    apex_y=100+node_offset_y;
+
     n = [
-        {x:250,y:110}  ,{x:300,y:110}
-       ,{x:200,y:170}  ,{x:300,y:170}
-       ,{x:230,y:230}  ,{x:300,y:230}  
-       ,{x:180,y:290}  ,{x:280,y:290}                  
+        {x:250+node_offset_x,y:110+node_offset_y}  ,{x:300+node_offset_x,y:110+node_offset_y}
+       ,{x:200+node_offset_x,y:110+node_spacing_y * 1 + node_offset_y}  ,{x:300+node_offset_x,y:110+node_spacing_y * 1 + node_offset_y}
+       ,{x:230+node_offset_x,y:110+node_spacing_y * 2 + node_offset_y}  ,{x:300+node_offset_x,y:110+node_spacing_y * 2 + node_offset_y}  
+       ,{x:180+node_offset_x,y:110+node_spacing_y * 3 + node_offset_y}  ,{x:280+node_offset_x,y:110+node_spacing_y * 3 + node_offset_y}                  
     ];
 
     L13=cl(n[0],n[2]);
@@ -99,7 +106,7 @@
                 <!-- Nodes -->
                 <g transform="translate(${n[0].x}, ${n[0].y})">
                 <g transform="rotate(45)">
-                    <rect class="color-rect" width="${node_size}" height="${node_size}" ></rect>
+                    <rect class="color-rect" width="${node_size}" height="${node_size}"></rect>
                 </g>
                 <text x="0" y="40" text-anchor="middle" fill="yellow" transform="rotate(0 25,25)">.</text>
             </g>
