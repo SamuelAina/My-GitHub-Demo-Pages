@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bin2</h1>
+    <input type="file" id="fileInput">
+    <textarea id="textArea"></textarea>
+    <br>
+    <button onclick="pasteText()">Paste</button>
+    <button onclick="copyText()">Copy</button>
+    <button onclick="saveToFile()">Save</button>
+    <button onclick="clearText()">Clear</button>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    const base64Content = arrayBufferToBase64(uint8Array);
+                    document.getElementById('textArea').value = base64Content;
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pasteText() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('textArea').value = text;
+            }).catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
+        }
+
+        function copyText() {
+            const textArea = document.getElementById('textArea');
+            textArea.select();
+            document.execCommand('copy');
+        }
+
+        function saveToFile() {
+            const textAreaContent = document.getElementById('textArea').value;
+            const arrayBuffer = base64ToArrayBuffer(textAreaContent);
+            const blob = new Blob([arrayBuffer], {type: 'application/octet-stream'});
+            const fileName = prompt('Enter file name:');
+            if (fileName) {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function clearText() {
+            document.getElementById('textArea').value = '';
+        }
+    </script>
+</body>
+</html>
