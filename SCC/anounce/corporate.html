@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCC Fundraising Event - Corporate Sponsors</title>
+    <!--
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,8 +15,8 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding: 10px;
             box-sizing: border-box;
-            color: #333333;
         }
 
         .flyer {
@@ -126,10 +127,124 @@
             }
         }
     </style>
+-->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .flyer {
+        background: 
+            linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), 
+            url('hands.jpg') center center / cover no-repeat;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .flyer h1 {
+        color: #2c3e50;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .flyer p {
+        color: #333333;
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .flyer .cta {
+        background-color: darkblue;
+        color: #ffffff;
+        padding: 8px;
+        border-radius: 5px;
+        font-size: 20px;
+        margin: 15px 0;
+    }
+
+    .flyer .cta strong {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .flyer .cta .account-details {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+        line-height: 1.2;
+        color: #e1f5fe;
+    }
+
+    .flyer .cta .account-details span {
+        display: block;
+        margin: 4px 0;
+        word-wrap: break-word;
+    }
+
+    .flyer .thank-you {
+        color: #1e8449;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .flyer .footer {
+        margin-top: 15px;
+        font-size: 16px;
+        color: black;
+        line-height: 1.4;
+        font-weight: bold;
+    }
+
+    /* Ensure the content fits within mobile screens */
+    @media (max-width: 480px) {
+        .flyer {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .flyer h1 {
+            font-size: 18px;
+        }
+
+        .flyer p, .flyer .footer {
+            font-size: 12px;
+        }
+
+        .flyer .cta {
+            font-size: 12px;
+        }
+
+        .flyer .cta strong {
+            font-size: 14px;
+        }
+
+        .flyer .thank-you {
+            font-size: 16px;
+        }
+    }
+</style>    
 </head>
 <body>
     <div class="flyer">
-        <h1>🌟 Support the SCC Fundraising Event! 🌟</h1>
+        <h1>🏛️ Support the SCC Fundraising Event! 🏛️</h1>
         <p>Your company can make a difference! Join us in supporting our community and aiding those in need.</p>
         
         <div class="cta">
@@ -148,7 +263,7 @@
 
         <p class="thank-you">Thank you for your support!</p>
 
-        <div class="footer">Contact us at 87.unilag.alumni.engineering.scc@gmail.com.</div>
+        <div class="footer">Contact us on +234 803 306 2258 (Engr Titi Oladejo) or at 87.unilag.alumni.engineering.scc@gmail.com.</div>
     </div>
 </body>
 </html>
