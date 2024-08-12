@@ -15,84 +15,107 @@
             align-items: center;
             height: 100vh;
             padding: 10px;
+            box-sizing: border-box;
         }
 
         .flyer {
-    background: 
-        linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), /* Increased opacity to 0.8 for a paler background */
-        url('hands.jpg') center center / cover no-repeat;
-    background-color: #ffffff; /* Fallback color */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 100%;
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)), 
+                url('hands.jpg') center center / cover no-repeat;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            max-width: 100%;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
 
         .flyer h1 {
             color: #2c3e50;
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         .flyer p {
-    color: #333333; /* Darker shade for better contrast */
-    font-size: 16px; /* Increased font size for better readability */
-    line-height: 1.6;
-    margin-bottom: 15px;
-    font-weight: bold; /* Make the text bold */
-}
-
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
 
         .flyer .cta {
             background-color: #2980b9;
             color: #ffffff;
-            padding: 10px;
+            padding: 8px;
             border-radius: 5px;
-            font-size: 16px;
-            margin: 20px 0;
+            font-size: 14px;
+            margin: 15px 0;
         }
 
         .flyer .cta strong {
             display: block;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 8px;
         }
 
         .flyer .cta .account-details {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    line-height: .8; /* Reduced from 1.4 to 1.2 */
-    color: #e1f5fe;
-}
-
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.2;
+            color: #e1f5fe;
+        }
 
         .flyer .cta .account-details span {
             display: block;
-            margin: 5px 0;
+            margin: 4px 0;
             word-wrap: break-word;
         }
 
         .flyer .thank-you {
-    color: #1e8449; /* Slightly darker shade for sharper contrast */
-    font-size: 20px; /* Increased font size for more impact */
-    font-weight: bold; /* Make the text bold */
-    margin-top: 20px;
-}
+            color: #1e8449;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
 
+        .flyer .footer {
+            margin-top: 15px;
+            font-size: 12px;
+            color: black;
+            line-height: 1.4;
+            font-weight: bold;
+        }
 
-.flyer .footer {
-    margin-top: 20px;
-    font-size: 14px; /* Increased font size for better legibility */
-    color: black; /* Darkened color for improved contrast */
-    line-height: 1.5; /* Added line-height for better readability */
-    font-weight: bold; /* Make the text bold */
-}
+        /* Ensure the content fits within mobile screens */
+        @media (max-width: 480px) {
+            .flyer {
+                padding: 10px;
+                font-size: 14px;
+            }
 
+            .flyer h1 {
+                font-size: 18px;
+            }
+
+            .flyer p, .flyer .footer {
+                font-size: 12px;
+            }
+
+            .flyer .cta {
+                font-size: 12px;
+            }
+
+            .flyer .cta strong {
+                font-size: 14px;
+            }
+
+            .flyer .thank-you {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
