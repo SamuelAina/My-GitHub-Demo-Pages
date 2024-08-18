@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Flyer - Brown Theme</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Trebuchet MS', sans-serif;
+            background-color: #4e342e; /* Dark brown background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .flyer-container {
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(135deg, #8d6e63, #a1887f); /* Gradient of lighter browns */
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 30px;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .flyer-container:hover {
+            transform: scale(1.05);
+        }
+
+        .flyer-container img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+
+        .header {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d7ccc8; /* Light brown text color */
+        }
+
+        .underline {
+            text-decoration: underline;
+            text-decoration-color: #5d4037; /* Darker brown underline */
+            text-decoration-thickness: 2px;
+        }
+
+        .address {
+            font-size: 24px;
+            margin-top: 10px;
+            line-height: 1.5;
+            color: #d7ccc8; /* Light brown text color */
+        }
+
+        .tagline {
+            color: #ffcc80; /* Soft orange color */
+            font-style: italic;
+            font-weight: bold;
+            font-size: 24px;
+            margin: 15px 0;
+        }
+
+        .caption {
+            margin-top: 40px;
+            font-size: 24px;
+            color: #ffffff;
+            font-weight: 700;
+            background-color: rgba(78, 52, 46, 0.7); /* Semi-transparent dark brown */
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .contactinfo {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #d7ccc8; /* Light brown text color */
+        }
+    </style>
+</head>
+<body>
+
+<div class="flyer-container">
+    <img src="AGABUS-LOGO.JPG" alt="AGABUS NIGERIA LTD Logo"/>
+    <div class="header underline">AGABUS NIGERIA LTD.</div>
+    <div class="address">
+        5, Lesi Crescent,<br>
+        Onipanu, Lagos.<br>
+        +2348033012438
+    </div>
+
+    <p class="tagline">Providing quality real estate services, taking away the stress from you.</p>
+    <p class="caption">Shout out to AGABUS NIGERIA LTD.<br>Thanks for offering to sponsor the SCC fundraising event.</p>
+</div>
+
+</body>
+</html>
