@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Flyer - Brown Theme</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Trebuchet MS', sans-serif;
+            background-color: #4e342e; /* Dark brown background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .flyer-container {
+            width: 90%;
+            max-width: 410px; /* Reduce width by 20% */
+            background: linear-gradient(135deg, orange, red); /* Gradient of lighter browns */
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 10px; /* Reduced padding */
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .flyer-container:hover {
+            transform: scale(1.05);
+        }
+
+        .flyer-container img {
+            max-width: 45%; /* Adjusted for smaller container */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 6px 0; /* Reduced margin */
+        }
+
+        .header {
+            font-size: 24px; /* Slightly smaller font */
+            font-weight: bold;
+            color: #d7ccc8; /* Light brown text color */
+        }
+
+        .underline {
+            text-decoration: underline;
+            text-decoration-color: #5d4037; /* Darker brown underline */
+            text-decoration-thickness: 2px;
+        }
+
+        .address {
+            font-size: 14px; /* Smaller font size */
+            margin-top: 7px;
+            line-height: 1.4;
+            color: #d7ccc8; /* Light brown text color */
+        }
+
+        .tagline {
+            color: #ffcc80; /* Soft orange color */
+            font-style: italic;
+            font-weight: bold;
+            font-size: 18px; /* Reduced font size */
+            margin: 4px 0;
+        }
+
+        .caption {
+            margin-top: 18px; /* Reduced margin */
+            font-size: 18px; /* Adjusted for smaller dimensions */
+            color: #ffffff;
+            font-weight: 700;
+            background-color: rgba(78, 52, 46, 0.7); /* Semi-transparent dark brown */
+            padding: 8px; /* Reduced padding */
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .contactinfo {
+            font-size: 14px;
+            margin: 6px 0;
+            color: #d7ccc8; /* Light brown text color */
+        }
+    </style>
+</head>
+<body>
+
+<div class="flyer-container">
+    <img src="Decalion-logo.jpeg" alt="Decalion LTD Logo"/>
+    <div class="header">Decalion LTD.</div>
+    <div class="address">
+        House 6. Emerald Court.  Dideolu Estates.  <br>
+        Victoria Island.  Lagos.<br>
+        titilola.oladejo@decalion.com.ng<br> 
+        +2348033062258 
+    </div>
+
+    <p class="tagline">Strategic Insight, Financial Foresight, Real Estate Expertise.</p>
+    <p class="caption">Shout out to Decalion LTD.<br>Thanks for offering to sponsor the SCC fundraising event.</p>
+</div>
+
+</body>
+</html>
+
