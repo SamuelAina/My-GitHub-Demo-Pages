@@ -22,7 +22,8 @@
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
                 margin: 20px;
                 padding: 25px;
-                width: 320px;
+                width: 300px;
+                width: 400px;
                 transition: transform 0.3s, box-shadow 0.3s;
                 border-top: 6px solid #007BFF;
             }
@@ -35,11 +36,13 @@
             }
             .card h2 {
                 margin-top: 0;
-                color: #007BFF;
                 font-size: 1.6em;
             }
-            .card:nth-child(odd) h2 {
+            .card.green h2 {
                 color: #28A745;
+            }
+            .card.brown h2 {
+                color: #8B4513;
             }
             .card p {
                 color: #333333;
@@ -58,21 +61,35 @@
     <h1>Prominent British Justices</h1>
 
     <div class="container">
-        <!-- Card for Lord Denning -->
-        <div class="card">
-            <h2>Lord Denning</h2>
+
+        <!-- Card for Lord Reed of Allermuir -->
+        <div class="card green">
+            <h2>Lord Reed of Allermuir</h2>
             <h3>Time in Office</h3>
-            <p>Master of the Rolls (1962 - 1982)</p>
+            <p>President of the Supreme Court (2020 - present), Deputy President (2018 - 2020)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Pioneered equitable principles and modernized common law, influential in contract and tort law.</p>
+            <p>Guides the Supreme Court's approach to constitutional and administrative law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments emphasized justice over legal formalism; clear, accessible reasoning.</p>
+            <p>Judgments are marked by careful reasoning and a deep understanding of constitutional principles.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Icon of judicial reform, accessible law for ordinary people, influence extends beyond the legal profession.</p>
+            <p>Influential in shaping the future direction of UK constitutional law.</p>
+        </div>
+
+        <!-- Card for Lord Kerr of Tonaghmore -->
+        <div class="card green">
+            <h2>Lord Kerr of Tonaghmore</h2>
+            <h3>Time in Office</h3>
+            <p>Justice of the Supreme Court (2009 - 2020)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Strong advocate for civil liberties and human rights within the UK legal framework.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Renowned for his principled and compassionate judgments, especially in human rights cases.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Respected for his commitment to protecting individual rights and freedoms.</p>
         </div>
 
         <!-- Card for Baroness Hale -->
-        <div class="card">
+        <div class="card green">
             <h2>Baroness Hale</h2>
             <h3>Time in Office</h3>
             <p>Justice of the Supreme Court (2009 - 2020), President (2017 - 2020)</p>
@@ -84,60 +101,86 @@
             <p>Trailblazer for women in law, strong advocate for vulnerable groups, significant public figure.</p>
         </div>
 
-        <!-- Card for Lord Bingham -->
-        <div class="card">
-            <h2>Lord Bingham</h2>
+        <!-- Card for Lord Neuberger of Abbotsbury -->
+        <div class="card green">
+            <h2>Lord Neuberger of Abbotsbury</h2>
             <h3>Time in Office</h3>
-            <p>Lord of Appeal in Ordinary (1996 - 2008), Senior Law Lord (2000 - 2008)</p>
+            <p>President of the Supreme Court (2012 - 2017)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Instrumental in the development of public law, human rights, and the rule of law.</p>
+            <p>Contributed to the development of access to justice and human rights law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Highly intellectual and rigorous, judgments are models of clarity and principle.</p>
+            <p>Highly regarded for his intellectual rigor and clarity in complex cases.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Champion of the rule of law, his writings and judgments continue to influence legal thought worldwide.</p>
+            <p>Influenced public understanding of the judiciary's role in a democratic society.</p>
         </div>
 
-        <!-- Card for Lord Reid -->
-        <div class="card">
-            <h2>Lord Reid</h2>
+        <!-- Card for Lord Mance -->
+        <div class="card green">
+            <h2>Lord Mance</h2>
             <h3>Time in Office</h3>
-            <p>Lord of Appeal in Ordinary (1948 - 1975)</p>
+            <p>Deputy President of the Supreme Court (2017 - 2018), Justice of the Supreme Court (2009 - 2018)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Key figure in shaping modern administrative and negligence law.</p>
+            <p>Significant contributions in international law, commercial law, and European law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments are practical and clear, focused on adapting the law to modern needs.</p>
+            <p>Respected for his detailed and nuanced judgments in complex legal areas.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Influenced judicial review and statutory interpretation, respected for his legal clarity.</p>
+            <p>Played a key role in interpreting European law within the UK legal system.</p>
         </div>
 
-        <!-- Card for Lord Atkin -->
-        <div class="card">
-            <h2>Lord Atkin</h2>
+        <!-- Card for Lord Sumption -->
+        <div class="card green">
+            <h2>Lord Sumption</h2>
             <h3>Time in Office</h3>
-            <p>Lord of Appeal in Ordinary (1928 - 1944)</p>
+            <p>Justice of the Supreme Court (2012 - 2018)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Revolutionized tort law with the 'neighbor principle' in negligence.</p>
+            <p>Known for his strong views on judicial restraint and the limits of judicial power.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments balanced legal principles with moral philosophy, foundational in tort law.</p>
+            <p>Judgments are characterized by intellectual depth and a strong philosophical approach.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Influence extends internationally, particularly in common law jurisdictions.</p>
+            <p>Influential both as a judge and a public commentator on legal and constitutional issues.</p>
         </div>
 
-        <!-- Card for Lord Wilberforce -->
-        <div class="card">
-            <h2>Lord Wilberforce</h2>
+        <!-- Card for Lord Carnwath of Notting Hill -->
+        <div class="card green">
+            <h2>Lord Carnwath of Notting Hill</h2>
             <h3>Time in Office</h3>
-            <p>Lord of Appeal in Ordinary (1964 - 1982)</p>
+            <p>Justice of the Supreme Court (2012 - 2020)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Contributed to public, constitutional, and international law.</p>
+            <p>Key figure in environmental law and planning law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments are known for balancing legal precedent with societal needs.</p>
+            <p>Judgments are respected for their clarity and their impact on public and administrative law.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Impact on judicial review and public law; respected for his broad vision.</p>
+            <p>Contributed significantly to the development of environmental jurisprudence in the UK.</p>
         </div>
+
+        <!-- Card for Lord Dyson -->
+        <div class="card green">
+            <h2>Lord Dyson</h2>
+            <h3>Time in Office</h3>
+            <p>Justice of the Supreme Court (2010 - 2012), Master of the Rolls (2012 - 2016)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Influential in civil procedure and human rights law.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments are known for their precision and their contribution to the development of civil law.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Played a crucial role in the reform of civil justice and procedure in the UK.</p>
+        </div>
+
+        <!-- Card for Lord Clarke of Stone-cum-Ebony -->
+        <div class="card green">
+            <h2>Lord Clarke of Stone-cum-Ebony</h2>
+            <h3>Time in Office</h3>
+            <p>Justice of the Supreme Court (2009 - 2017)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Expert in maritime law, commercial law, and greatly contributed to these fields.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments are noted for their clarity and impact on the development of commercial jurisprudence.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Influential in shaping the law related to commerce and international trade.</p>
+        </div>  
 
         <!-- Card for Lord Hoffmann -->
-        <div class="card">
+        <div class="card brown">
             <h2>Lord Hoffmann</h2>
             <h3>Time in Office</h3>
             <p>Lord of Appeal in Ordinary (1995 - 2009)</p>
@@ -149,21 +192,34 @@
             <p>Influential in human rights law; shaped the interpretation of the European Convention on Human Rights.</p>
         </div>
 
-        <!-- Card for Lord Macmillan -->
-        <div class="card">
-            <h2>Lord Macmillan</h2>
+        <!-- Card for Lord Bingham -->
+        <div class="card brown">
+            <h2>Lord Bingham</h2>
             <h3>Time in Office</h3>
-            <p>Lord of Appeal in Ordinary (1930 - 1947)</p>
+            <p>Lord of Appeal in Ordinary (1996 - 2008), Senior Law Lord (2000 - 2008)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Developed principles in torts, administrative, and commercial law.</p>
+            <p>Instrumental in the development of public law, human rights, and the rule of law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments are detailed and foundational, particularly in negligence law.</p>
+            <p>Highly intellectual and rigorous, judgments are models of clarity and principle.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Internationally recognized for contributions to legal doctrine.</p>
+            <p>Champion of the rule of law, his writings and judgments continue to influence legal thought worldwide.</p>
         </div>
 
+        <!-- Card for Lord Hailsham -->
+        <div class="card brown">
+            <h2>Lord Hailsham</h2>
+            <h3>Time in Office</h3>
+        <p>Lord Chancellor (1970 - 1974, 1979 - 1987)</p>
+        <h3>Impact on the Development of the Law</h3>
+        <p>Influenced constitutional law and legal reforms.</p>
+        <h3>Quality of their Judgments</h3>
+        <p>Judgments are solid, with a focus on legal and constitutional principles.</p>
+        <h3>Broader Influence on Society</h3>
+        <p>Prominent public figure; influenced debates on democracy and constitutional reform.</p>
+    </div>
+
         <!-- Card for Lord Diplock -->
-        <div class="card">
+        <div class="card brown">
             <h2>Lord Diplock</h2>
             <h3>Time in Office</h3>
             <p>Lord of Appeal in Ordinary (1968 - 1985)</p>
@@ -175,19 +231,71 @@
             <p>Influence on public law principles, particularly in the realm of judicial review.</p>
         </div>
 
-        <!-- Card for Lord Hailsham -->
-        <div class="card">
-            <h2>Lord Hailsham</h2>
+        <!-- Card for Lord Wilberforce -->
+        <div class="card brown">
+            <h2>Lord Wilberforce</h2>
             <h3>Time in Office</h3>
-            <p>Lord Chancellor (1970 - 1974, 1979 - 1987)</p>
+            <p>Lord of Appeal in Ordinary (1964 - 1982)</p>
             <h3>Impact on the Development of the Law</h3>
-            <p>Influenced constitutional law and legal reforms.</p>
+            <p>Contributed to public, constitutional, and international law.</p>
             <h3>Quality of their Judgments</h3>
-            <p>Judgments are solid, with a focus on legal and constitutional principles.</p>
+            <p>Judgments are known for balancing legal precedent with societal needs.</p>
             <h3>Broader Influence on Society</h3>
-            <p>Prominent public figure; influenced debates on democracy and constitutional reform.</p>
+            <p>Impact on judicial review and public law; respected for his broad vision.</p>
         </div>
 
+        <!-- Card for Lord Denning -->
+        <div class="card brown">
+            <h2>Lord Denning</h2>
+            <h3>Time in Office</h3>
+            <p>Master of the Rolls (1962 - 1982)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Pioneered equitable principles and modernized common law, influential in contract and tort law.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments emphasized justice over legal formalism; clear, accessible reasoning.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Icon of judicial reform, accessible law for ordinary people, influence extends beyond the legal profession.</p>
+        </div>
+
+        <!-- Card for Lord Macmillan -->
+        <div class="card brown">
+            <h2>Lord Macmillan</h2>
+            <h3>Time in Office</h3>
+            <p>Lord of Appeal in Ordinary (1930 - 1947)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Developed principles in torts, administrative, and commercial law.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments are detailed and foundational, particularly in negligence law.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Internationally recognized for contributions to legal doctrine.</p>
+        </div>
+
+        <!-- Card for Lord Atkin -->
+        <div class="card brown">
+            <h2>Lord Atkin</h2>
+            <h3>Time in Office</h3>
+            <p>Lord of Appeal in Ordinary (1928 - 1944)</p>
+            <h3>Impact on the Development of the Law</h>
+            <p>Revolutionized tort law with the 'neighbor principle' in negligence.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments balanced legal principles with moral philosophy, foundational in tort law.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Influence extends internationally, particularly in common law jurisdictions.</p>
+        </div>
+
+        <!-- Card for Lord Reid -->
+        <div class="card brown">
+            <h2>Lord Reid</h2>
+            <h3>Time in Office</h3>
+            <p>Lord of Appeal in Ordinary (1948 - 1975)</p>
+            <h3>Impact on the Development of the Law</h3>
+            <p>Key figure in shaping modern administrative and negligence law.</p>
+            <h3>Quality of their Judgments</h3>
+            <p>Judgments are practical and clear, focused on adapting the law to modern needs.</p>
+            <h3>Broader Influence on Society</h3>
+            <p>Influenced judicial review and statutory interpretation, respected for his legal clarity.</p>
+        </div>
+     
     </div>
 
 </body>
