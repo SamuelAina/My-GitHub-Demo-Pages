@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance & LLMs Flashcards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #ffffff;
+            font-size: 2.8rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #a0d2eb;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .flashcard-container {
+            perspective: 1500px;
+            margin: 30px auto;
+            height: 400px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .flashcard {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            border-radius: 20px;
+        }
+        
+        .front {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: #2c3e50;
+        }
+        
+        .back {
+            background: linear-gradient(135deg, #2c3e50, #1a2a6c);
+            color: #ffffff;
+            transform: rotateY(180deg);
+        }
+        
+        .term {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .definition {
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .instructions {
+            color: #ffffff;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        .counter {
+            color: #a0d2eb;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            max-width: 600px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .term {
+                font-size: 2.2rem;
+            }
+            
+            .definition {
+                font-size: 1.3rem;
+            }
+            
+            .flashcard-container {
+                height: 350px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .term {
+                font-size: 1.8rem;
+            }
+            
+            .definition {
+                font-size: 1.1rem;
+            }
+            
+            .flashcard-container {
+                height: 320px;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Predictive Maintenance & LLMs</h1>
+            <p class="subtitle">Click on the flashcard to reveal the definition. Click again to see the next term.</p>
+        </div>
+        
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="card-face front">
+                    <div class="term" id="term">Predictive Maintenance</div>
+                    <p class="icon"><i class="fas fa-hand-point-up"></i> Click to reveal definition</p>
+                </div>
+                <div class="card-face back">
+                    <div class="definition" id="definition">A proactive approach that uses data analysis to predict software failures and schedule maintenance to prevent system downtime.</div>
+                    <p class="icon"><i class="fas fa-hand-point-up"></i> Click for next card</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="counter" id="counter">
+            <i class="fas fa-layer-group"></i> Card <span id="currentCount">1</span> of <span id="totalCount">10</span>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="prevBtn">
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button class="btn" id="nextBtn">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="btn" id="resetBtn">
+                <i class="fas fa-sync-alt"></i> Reset Cards
+            </button>
+        </div>
+        
+        <div class="instructions">
+            <i class="fas fa-info-circle"></i> This flashcard app helps you learn key terms from the research proposal on using Large Language Models (LLMs) in predictive maintenance for software systems.
+        </div>
+    </div>
+
+    <script>
+        // Flashcards data
+        const flashcards = [
+            {
+                term: "Predictive Maintenance",
+                definition: "A proactive approach that uses data analysis to predict software failures and schedule maintenance to prevent system downtime."
+            },
+            {
+                term: "LLM",
+                definition: "Large Language Model; advanced AI models trained on extensive text data, capable of understanding and generating human-like text, applied for analyzing software logs."
+            },
+            {
+                term: "Fine-tuning",
+                definition: "The process of adapting a pre-trained LLM to a specific task by training it further on domain-specific data like software logs."
+            },
+            {
+                term: "Data Preprocessing",
+                definition: "Cleaning, normalizing, and transforming raw data (like software logs) into a format suitable for machine learning models."
+            },
+            {
+                term: "LoRA",
+                definition: "Low-Rank Adaptation; a parameter-efficient fine-tuning technique that reduces computational costs while maintaining model performance."
+            },
+            {
+                term: "Prompt Engineering",
+                definition: "The practice of designing effective input prompts to enhance LLM capabilities for specific tasks like failure prediction."
+            },
+            {
+                term: "Framework Development",
+                definition: "Creating a modular architecture to integrate data ingestion, analysis, and predictive engines for scalable maintenance solutions."
+            },
+            {
+                term: "Evaluation Metrics",
+                definition: "Measures such as accuracy, precision, recall, and F1-score used to assess the performance of predictive models."
+            },
+            {
+                term: "Economic Impact Analysis",
+                definition: "Assessing financial benefits of predictive maintenance including reduced downtime and maintenance cost savings."
+            },
+            {
+                term: "Research Ethics",
+                definition: "Guidelines ensuring responsible research, including data privacy, anonymization, and informed consent."
+            },
+			
+{
+    term: "Software Systems",
+    definition: "Computer-based systems integral to contemporary infrastructure whose escalating complexity often leads to increased failures and maintenance challenges."
+},
+{
+    term: "System Failures",
+    definition: "Unexpected disruptions in software system operations caused by increasing complexity, requiring predictive approaches to minimize impact."
+},
+{
+    term: "Mechanical Systems Predictive Maintenance",
+    definition: "Established approach in physical machinery that inspired the adaptation of predictive techniques to software systems."
+},
+{
+    term: "GPT Models",
+    definition: "Generative Pre-trained Transformer models, a class of large language models known for natural language processing capabilities."
+},
+{
+    term: "Codex Models",
+    definition: "Large language models specialized in understanding and generating programming code, developed by OpenAI."
+},
+{
+    term: "Natural Language Processing (NLP)",
+    definition: "AI field enabling machines to understand human language, crucial for analyzing software logs and documentation."
+},
+{
+    term: "Error Detection",
+    definition: "Capability of LLMs to identify anomalies and potential failure points in software systems through log analysis."
+},
+{
+    term: "Software Logs",
+    definition: "Time-stamped records of system events and operations that serve as primary data source for predictive maintenance."
+},
+{
+    term: "Code Summarization",
+    definition: "LLM application that automatically generates concise descriptions of software code functionality."
+},
+{
+    term: "Automated Debugging",
+    definition: "Use of AI systems to identify, locate, and fix software bugs without human intervention."
+},
+{
+    term: "Test Generation",
+    definition: "Automatic creation of software test cases by AI models to validate system functionality."
+},
+{
+    term: "Data Collection",
+    definition: "Initial phase involving compilation of public datasets (e.g., Linux kernel logs) and proprietary industry datasets."
+},
+{
+    term: "Data Cleaning",
+    definition: "Process of removing inaccuracies, inconsistencies, and irrelevant information from raw software logs."
+},
+{
+    term: "Data Normalization",
+    definition: "Transforming log data into standardized format to ensure consistent processing by machine learning models."
+},
+{
+    term: "Tokenization",
+    definition: "Breaking down log entries into smaller units (tokens) for efficient processing by language models."
+},
+{
+    term: "Domain-Specific Terminology",
+    definition: "Specialized vocabulary and concepts unique to software engineering that must be adapted for LLM processing."
+},
+{
+    term: "Model Fine-tuning",
+    definition: "Adapting pre-trained LLMs using domain-specific data to specialize them for predictive maintenance tasks."
+},
+{
+    term: "Computational Efficiency",
+    definition: "Optimization goal in model training to reduce resource consumption while maintaining performance."
+},
+{
+    term: "Modular Architecture",
+    definition: "System design approach using interchangeable components for flexibility in predictive maintenance frameworks."
+},
+{
+    term: "Data Ingestion",
+    definition: "Process of collecting and importing log data into the predictive maintenance system for analysis."
+},
+{
+    term: "Predictive Engines",
+    definition: "Core components that analyze processed data to forecast potential system failures."
+},
+{
+    term: "Scalability",
+    definition: "System's ability to handle increasing amounts of data and complexity without performance degradation."
+},
+{
+    term: "Adaptability",
+    definition: "Framework's capacity to adjust to different software environments and evolving system requirements."
+},
+{
+    term: "Accuracy Metric",
+    definition: "Evaluation measure of correct predictions (both failures and non-failures) divided by total predictions."
+},
+{
+    term: "Precision Metric",
+    definition: "Ratio of correctly predicted failures to total predicted failures, measuring prediction relevancy."
+},
+{
+    term: "Recall Metric",
+    definition: "Proportion of actual failures correctly identified by the predictive system."
+},
+{
+    term: "F1-Score",
+    definition: "Harmonic mean of precision and recall, providing balanced evaluation metric for predictive models."
+},
+{
+    term: "Downtime Reduction",
+    definition: "Key economic benefit of predictive maintenance measured by decreased system unavailability periods."
+},
+{
+    term: "Maintenance Cost Savings",
+    definition: "Financial benefit derived from optimized repair scheduling and prevention of catastrophic failures."
+},
+{
+    term: "Rule-Based Predictive Methods",
+    definition: "Traditional approach using predefined conditional rules to anticipate system failures."
+},
+{
+    term: "Statistical Predictive Methods",
+    definition: "Conventional techniques using mathematical models to forecast failures based on historical patterns."
+},
+{
+    term: "IT Departments",
+    definition: "Primary beneficiaries of predictive maintenance through enhanced system reliability and reduced costs."
+},
+{
+    term: "System Reliability",
+    definition: "Key operational benefit of predictive maintenance ensuring consistent software performance."
+},
+{
+    term: "Software Engineering (SE)",
+    definition: "Discipline applying engineering principles to software development where LLMs show transformative potential."
+},
+{
+    term: "Machine Learning Application",
+    definition: "Practical implementation of ML techniques like LLMs to solve real-world software maintenance problems."
+},
+{
+    term: "Deep Learning Models",
+    definition: "Advanced neural networks used in developing predictive systems for software maintenance."
+},
+{
+    term: "Stakeholder Management",
+    definition: "Essential skill for communicating technical results to non-specialist audiences and managing expectations."
+},
+{
+    term: "Agile Environments",
+    definition: "Development methodology where predictive maintenance frameworks must effectively operate and deliver."
+},
+{
+    term: "GPU Clusters",
+    definition: "Critical computational resource for training and running large language models efficiently."
+},
+{
+    term: "Industry Partnerships",
+    definition: "Collaborations essential for obtaining proprietary datasets and validating real-world applications."
+},
+{
+    term: "Data Anonymization",
+    definition: "Process of removing personally identifiable information from datasets to protect privacy."
+},
+{
+    term: "Informed Consent",
+    definition: "Ethical requirement ensuring data providers understand how their information will be used."
+},
+{
+    term: "Open University Ethics Guidelines",
+    definition: "Specific research ethics standards that must be followed throughout the project lifecycle."
+},
+{
+    term: "Proactive Maintenance",
+    definition: "Approach anticipating failures before they occur, contrasting with reactive break-fix models."
+},
+{
+    term: "Failure Prediction",
+    definition: "Core capability of the proposed framework to forecast software system issues before manifestation."
+},
+{
+    term: "Log Analysis",
+    definition: "Process of examining software log files to identify patterns, anomalies, and potential failure indicators."
+},
+{
+    term: "Parameter-Efficient Tuning",
+    definition: "Techniques like LoRA that adapt large models with minimal computational resources."
+},
+{
+    term: "Cross-Environment Compatibility",
+    definition: "Framework's ability to operate across diverse software systems and platforms."
+},
+{
+    term: "Predictive Capability Enhancement",
+    definition: "Improving model performance through specialized prompt engineering techniques."
+},
+{
+    term: "Economic Benefit Quantification",
+    definition: "Process of measuring financial impact through metrics like cost savings and ROI calculations."
+},
+{
+    term: "Comparative Analysis",
+    definition: "Evaluation method comparing LLM-based approaches against traditional predictive maintenance techniques."
+},
+{
+    term: "Theoretical Contribution",
+    definition: "Advancement of academic understanding in applying LLMs to software maintenance challenges."
+},
+{
+    term: "Practical Implementation",
+    definition: "Real-world deployment of research findings in commercial software environments."
+},
+{
+    term: "Technical Communication",
+    definition: "Essential skill for translating complex predictive maintenance results to diverse audiences."
+},
+{
+    term: "Proprietary Datasets",
+    definition: "Confidential data from industry partners requiring special handling and privacy protection."
+},
+{
+    term: "Public Datasets",
+    definition: "Openly available log collections like Linux kernel logs used for model training."
+},
+{
+    term: "Apache Server Logs",
+    definition: "Common web server log format used as data source for predictive maintenance research."
+},
+{
+    term: "Domain Adaptation",
+    definition: "Process of customizing general-purpose LLMs for specialized software maintenance tasks."
+},
+{
+    term: "Maintenance Scheduling",
+    definition: "Strategic planning of repair activities informed by predictive failure forecasts."
+},
+{
+    term: "System Complexity",
+    definition: "Growing challenge in modern software that increases failure risk and maintenance difficulty."
+},
+{
+    term: "Infrastructure Integration",
+    definition: "Incorporating predictive maintenance capabilities into existing software ecosystems."
+},
+{
+    term: "Real-time Analysis",
+    definition: "Processing log data as it's generated to enable immediate failure predictions."
+},
+{
+    term: "Anomaly Detection",
+    definition: "Identifying unusual patterns in system behavior that may indicate impending failures."
+},
+{
+    term: "Pattern Recognition",
+    definition: "LLM capability to identify failure precursors in historical log sequences."
+},
+{
+    term: "Maintenance Optimization",
+    definition: "Strategic approach to minimize costs while maximizing system reliability and availability."
+},
+{
+    term: "False Positive Reduction",
+    definition: "Minimizing incorrect failure predictions to maintain operational efficiency."
+},
+{
+    term: "False Negative Mitigation",
+    definition: "Reducing missed failure predictions to prevent unexpected system outages."
+},
+{
+    term: "Model Validation",
+    definition: "Process of testing predictive models against unseen data to verify performance."
+},
+{
+    term: "Hyperparameter Tuning",
+    definition: "Optimizing model configuration settings to enhance predictive performance."
+},
+{
+    term: "Training Data Curation",
+    definition: "Careful selection and preparation of datasets used to teach models predictive capabilities."
+},
+{
+    term: "Log Parsing",
+    definition: "Converting unstructured log entries into structured formats suitable for analysis."
+},
+{
+    term: "Feature Extraction",
+    definition: "Identifying and selecting relevant log attributes that predict system failures."
+},
+{
+    term: "Temporal Analysis",
+    definition: "Examining time-based patterns in logs to forecast failure probabilities."
+},
+{
+    term: "Root Cause Prediction",
+    definition: "Advanced capability to identify underlying reasons for potential failures."
+},
+{
+    term: "Maintenance Action Recommendations",
+    definition: "Suggesting specific repair or mitigation strategies based on failure predictions."
+},
+{
+    term: "System Health Monitoring",
+    definition: "Continuous assessment of software status using predictive analytics."
+},
+{
+    term: "Failure Probability Scoring",
+    definition: "Quantitative assessment of how likely a system is to fail within a given timeframe."
+},
+{
+    term: "Early Warning Systems",
+    definition: "Predictive frameworks that alert operators about potential failures in advance."
+},
+{
+    term: "Resource Allocation Optimization",
+    definition: "Strategic deployment of maintenance resources based on predicted failure priorities."
+},
+{
+    term: "Mean Time Between Failures (MTBF)",
+    definition: "Key reliability metric that predictive maintenance aims to increase."
+},
+{
+    term: "Mean Time To Repair (MTTR)",
+    definition: "Critical operational metric that predictive maintenance seeks to minimize."
+},
+{
+    term: "Predictive Model Deployment",
+    definition: "Integration of trained models into operational environments for real-time use."
+},
+{
+    term: "Model Drift Monitoring",
+    definition: "Tracking performance degradation over time as system behaviors evolve."
+},
+{
+    term: "Continuous Retraining",
+    definition: "Periodic model updating with new data to maintain prediction accuracy."
+},
+{
+    term: "Alert Fatigue Reduction",
+    definition: "Minimizing unnecessary warnings through accurate failure predictions."
+},
+{
+    term: "Cost-Benefit Analysis",
+    definition: "Evaluating economic justification for implementing predictive maintenance."
+},
+{
+    term: "Return on Investment (ROI)",
+    definition: "Key financial metric for assessing predictive maintenance value."
+},
+{
+    term: "Service Level Agreement (SLA) Compliance",
+    definition: "Meeting contractual uptime requirements through predictive maintenance."
+},
+{
+    term: "Technical Debt Reduction",
+    definition: "Minimizing accumulated maintenance backlog through proactive interventions."
+},
+{
+    term: "System Longevity",
+    definition: "Extending operational lifespan of software through predictive maintenance."
+},
+{
+    term: "Vendor-Neutral Framework",
+    definition: "Compatible with diverse software systems regardless of underlying technology."
+},
+{
+    term: "API Integration",
+    definition: "Connecting predictive framework with existing systems through application interfaces."
+},
+{
+    term: "Data Pipeline",
+    definition: "End-to-end process from log collection to predictive insights generation."
+},
+{
+    term: "Model Interpretability",
+    definition: "Understanding why models make specific failure predictions."
+},
+{
+    term: "Prediction Explainability",
+    definition: "Capability to justify failure forecasts with understandable reasoning."
+},
+{
+    term: "Confidence Scoring",
+    definition: "Quantifying reliability level for individual predictions."
+},
+{
+    term: "Edge Case Handling",
+    definition: "Managing rare or unexpected scenarios in failure prediction."
+},
+{
+    term: "Multi-System Correlation",
+    definition: "Identifying failure patterns across interconnected software components."
+},
+{
+    term: "Dependency Mapping",
+    definition: "Understanding relationships between system components for accurate predictions."
+},
+{
+    term: "Load Pattern Analysis",
+    definition: "Examining usage trends to predict stress-related failures."
+},
+{
+    term: "Seasonal Variation Accounting",
+    definition: "Adjusting predictions for periodic usage fluctuations."
+},
+{
+    term: "Change Impact Prediction",
+    definition: "Forecasting how system modifications might affect stability."
+},
+{
+    term: "Rollback Recommendation",
+    definition: "Suggesting reversals of problematic system changes."
+},
+{
+    term: "Knowledge Base Integration",
+    definition: "Connecting predictions with historical maintenance records."
+},
+{
+    term: "Automated Reporting",
+    definition: "Generating maintenance insights and recommendations without manual effort."
+},
+{
+    term: "Customizable Thresholds",
+    definition: "Adjusting sensitivity levels for failure alerts based on business needs."
+},
+{
+    term: "Maintenance History Analysis",
+    definition: "Mining past repair records to improve future predictions."
+},
+{
+    term: "Failure Mode Taxonomy",
+    definition: "Classification system for different types of software failures."
+},
+{
+    term: "Recovery Time Objective (RTO)",
+    definition: "Target time for system restoration that predictive maintenance supports."
+},
+{
+    term: "Recovery Point Objective (RPO)",
+    definition: "Acceptable data loss threshold that predictive maintenance helps achieve."
+},
+{
+    term: "Capacity Planning",
+    definition: "Resource forecasting informed by predictive failure analysis."
+},
+{
+    term: "Technology Refresh Planning",
+    definition: "Scheduling system upgrades based on predicted end-of-life forecasts."
+},
+{
+    term: "Vulnerability Prediction",
+    definition: "Anticipating security weaknesses before they can be exploited."
+},
+{
+    term: "Compliance Monitoring",
+    definition: "Ensuring systems meet regulatory requirements through predictive oversight."
+},
+{
+    term: "Benchmarking",
+    definition: "Comparing predictive performance against industry standards."
+},
+{
+    term: "Continuous Improvement Cycle",
+    definition: "Ongoing enhancement of predictive capabilities based on operational feedback."
+},
+{
+    term: "Skill Gap Reduction",
+    definition: "Mitigating expertise shortages through AI-powered maintenance assistance."
+}			
+        ];
+
+        // DOM elements
+        const flashcard = document.getElementById('flashcard');
+        const termElement = document.getElementById('term');
+        const definitionElement = document.getElementById('definition');
+        const currentCountElement = document.getElementById('currentCount');
+        const totalCountElement = document.getElementById('totalCount');
+        const progressBar = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // State variables
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let viewedCards = new Set([0]);
+        let cardHistory = [0];
+        let historyPointer = 0;
+        
+        // Initialize
+        updateCounter();
+        totalCountElement.textContent = flashcards.length;
+        
+        // Event listener for flashcard click
+        flashcard.addEventListener('click', () => {
+            if (!isFlipped) {
+                // Flip to show definition
+                flashcard.classList.add('flipped');
+                isFlipped = true;
+            } else {
+                // Get next card
+                getNextCard();
+            }
+        });
+        
+        // Next button click
+        nextBtn.addEventListener('click', () => {
+            if (isFlipped) {
+                getNextCard();
+            } else {
+                // First flip the card to show definition
+                flashcard.classList.add('flipped');
+                isFlipped = true;
+            }
+        });
+        
+        // Previous button click
+        prevBtn.addEventListener('click', () => {
+            if (historyPointer > 0) {
+                historyPointer--;
+                currentCardIndex = cardHistory[historyPointer];
+                updateCardContent();
+                flashcard.classList.remove('flipped');
+                isFlipped = false;
+                updateCounter();
+            }
+        });
+        
+        // Reset button click
+        resetBtn.addEventListener('click', () => {
+            viewedCards.clear();
+            cardHistory = [];
+            historyPointer = 0;
+            getNextCard(true);
+        });
+        
+        function getNextCard(reset = false) {
+            // Flip back to front for new card
+            flashcard.classList.remove('flipped');
+            isFlipped = false;
+            
+            setTimeout(() => {
+                // Get a new random card that hasn't been viewed recently
+                let newIndex;
+                if (reset) {
+                    // For reset, get a completely new random card
+                    newIndex = Math.floor(Math.random() * flashcards.length);
+                } else {
+                    do {
+                        newIndex = Math.floor(Math.random() * flashcards.length);
+                    } while (viewedCards.has(newIndex) && viewedCards.size < flashcards.length);
+                }
+                
+                // If we've viewed all cards, reset the set
+                if (viewedCards.size === flashcards.length) {
+                    viewedCards.clear();
+                }
+                
+                viewedCards.add(newIndex);
+                currentCardIndex = newIndex;
+                
+                // Update history
+                cardHistory.push(newIndex);
+                historyPointer = cardHistory.length - 1;
+                
+                // Update card content
+                updateCardContent();
+                updateCounter();
+            }, 400);
+        }
+        
+        function updateCardContent() {
+            termElement.textContent = flashcards[currentCardIndex].term;
+            definitionElement.textContent = flashcards[currentCardIndex].definition;
+        }
+        
+        function updateCounter() {
+            currentCountElement.textContent = viewedCards.size;
+            progressBar.style.width = `${(viewedCards.size / flashcards.length) * 100}%`;
+            
+            // Update button states
+            prevBtn.disabled = historyPointer === 0;
+            prevBtn.style.opacity = historyPointer === 0 ? 0.5 : 1;
+            prevBtn.style.cursor = historyPointer === 0 ? 'not-allowed' : 'pointer';
+        }
+    </script>
+</body>
+</html>
